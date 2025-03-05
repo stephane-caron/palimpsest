@@ -3,7 +3,6 @@
 # Copyright 2022 Stéphane Caron
 
 # You can also set these variables from the command line.
-BROWSER = firefox
 DOXYGEN = doxygen
 OUTPUTDIR = html
 
@@ -18,7 +17,7 @@ clean:  ## remove all generated files
 
 .PHONY: open
 open:  ## open the locally built documentation in Firefox
-	$(BROWSER) $(OUTPUTDIR)/index.html
+	xdg-open $(OUTPUTDIR)/index.html
 
 # Help snippet from:
 # http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
