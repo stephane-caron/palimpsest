@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- CICD: Update checkout action to v4
+
 ## [2.2.1] - 2024/11/18
 
 ### Added
