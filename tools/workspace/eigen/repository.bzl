@@ -4,8 +4,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 
 def eigen_repository(
-        version = "3.3.4",
-        sha256 = "b4415a2e16bbaff7568e52853c9e131633248c9bc66d565086e095087e95877d"):
+        version = "3.4.0",
+        sha256 = "1ccaabbfe870f60af3d6a519c53e09f3dcf630207321dffa553564a8e75c4fc8"):
     """
     Download repository from GitLab as a ZIP archive, decompress it, and make
     its targets available for binding.

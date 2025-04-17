@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - CICD: Update checkout action to v4
+- Update Eigen dependency to version 3.4.0
 
 ## [2.2.1] - 2024/11/18
 
