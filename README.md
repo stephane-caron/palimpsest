@@ -120,8 +120,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
     name = "palimpsest",
     sha256 = "d998b4e195ef75e558f0477da85ffd1961fb2a5b9ad1bafa1a378b6fa8931505",
-    strip_prefix = "palimpsest-2.2.1",
-    url = "https://github.com/stephane-caron/palimpsest/archive/refs/tags/v2.2.1.tar.gz",
+    strip_prefix = "palimpsest-2.3.0",
+    url = "https://github.com/stephane-caron/palimpsest/archive/refs/tags/v2.3.0.tar.gz",
 )
 
 load("@palimpsest//tools/workspace:default.bzl", add_palimpsest_repositories = "add_default_repositories")

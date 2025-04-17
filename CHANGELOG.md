@@ -4,12 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.3.0] - 2024-11-18
+
 ### Changed
 
 - CICD: Update checkout action to v4
 - Update Eigen dependency to version 3.4.0
 
-## [2.2.1] - 2024/11/18
+## [2.2.1] - 2024-11-18
 
 ### Added
 
@@ -19,7 +21,7 @@ All notable changes to this project will be documented in this file.
 
 - CICD: Update documentation workflow
 
-## [2.2.0] - 2024/08/08
+## [2.2.0] - 2024-08-08
 
 ### Added
 
@@ -31,7 +33,7 @@ All notable changes to this project will be documented in this file.
 - Always check types when deserializing
 - docs: Don't show include files
 
-## [2.1.0] - 2024/05/24
+## [2.1.0] - 2024-05-24
 
 ### Added
 
@@ -85,7 +87,8 @@ All notable changes to this project will be documented in this file.
 
 This is the initial release of _palimpsest_, a small C++ library that provides a ``Dictionary`` type meant for fast value updates and serialization. It is called palimpsest because these dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
 
-[unreleased]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.1...HEAD
+[unreleased]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.0.0...v2.1.0
