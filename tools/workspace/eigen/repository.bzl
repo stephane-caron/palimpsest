@@ -1,32 +1,25 @@
 # -*- python -*-
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 
-def eigen_repository(
-        version = "3.3.9",
-        sha256 = "690caabab3b813d944a27b074a847cdd9e9a824af0b1bab772c0ab624479b1e2"):
+def eigen_repository():
     """
-    Download repository from GitLab as a ZIP archive, decompress it, and make
-    its targets available for binding.
-
-    Args:
-        version: version of the library to get.
-        sha256: SHA-256 checksum of the downloaded archive.
+    Clone Eigen repository and expose it as a Bazel target.
 
     Note:
-        Eigen release archives suffer from checksum issues that seem, as of
-        April 2025, to be caused by the GitLab infrastructure, as detailed in
-        https://gitlab.com/libeigen/eigen/-/issues/2919 and
+        Previously this rule followed the better practice of downloading source
+        code as an archive, decompressing it, and making its targets available
+        for binding. Eigen release archives suffer however from checksum issues
+        that stem, as of the analysis in April 2025, from the GitLab
+        infrastructure rather than from the Eigen project. The investigation is
+        as detailed in https://gitlab.com/libeigen/eigen/-/issues/2919 and
         https://gitlab.com/libeigen/eigen/-/issues/2923. This behavior is the
-        reason why we rolled back from Eigen 3.4.0 to Eigen 3.3.9.
+        reason why we rolled back to a git-repository rule.
     """
-    http_archive(
-        name = "eigen",
-        urls = [
-            "https://gitlab.com/libeigen/eigen/-/archive/{}/eigen-{}.zip".format(version, version),
-        ],
-        sha256 = sha256,
-        strip_prefix = "eigen-{}".format(version),
+    git_repository(
+        name= "eigen",
+        remote = "https://gitlab.com/libeigen/eigen.git",
+        commit = "3147391d946bb4b6c68edd901f2add6ac1f31f8c",  # version 3.4.0
         build_file = Label("//tools/workspace/eigen:package.BUILD"),
     )

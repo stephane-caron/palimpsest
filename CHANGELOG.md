@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Update Eigen workspace rule to a git-repository rather than http-archive one
+
 ## [2.3.1] - 2025-05-08
 
 ### Changed
