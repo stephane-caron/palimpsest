@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.3.2] - 2025-05-08
+
 ### Changed
 
 - Update Eigen workspace rule to a git-repository rather than http-archive one
@@ -97,7 +99,8 @@ All notable changes to this project will be documented in this file.
 
 This is the initial release of _palimpsest_, a small C++ library that provides a ``Dictionary`` type meant for fast value updates and serialization. It is called palimpsest because these dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
 
-[unreleased]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.1...HEAD
+[unreleased]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.2...HEAD
+[2.3.2]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.1...v2.3.2
 [2.3.1]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.0...v2.2.1
