@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [2.3.0] - 2024-11-18
+### Changed
+
+- Roll back Eigen dependency to version 3.3.9 and document why
+
+## [2.3.0] - 2025-04-17
 
 ### Changed
 
