@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Add an `update` override to update from another dictionary
+- docs: Add Developer notes page
+- docs: Add Usage page
 
 ### Fixed
 

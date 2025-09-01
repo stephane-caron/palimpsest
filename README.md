@@ -57,7 +57,7 @@ world_bis.read("world.mpack");
 std::cout << world_bis << std::endl;
 ```
 
-Dictionaries can also be [serialized to bytes](#serialization-to-bytes) for transmission over TCP, memory-mapped files, telegraph lines, etc. Code in the [examples](https://github.com/stephane-caron/palimpsest/tree/main/examples) directory shows how to save and load dictionaries to and from C++ and Python.
+Dictionaries can also be serialized to bytes for transmission over TCP, memory-mapped files, telegraph lines, etc. Code in the [examples](https://github.com/stephane-caron/palimpsest/tree/main/examples) directory shows how to save and load dictionaries to and from C++ and Python.
 
 ## Link with Python dictionaries
 
@@ -96,7 +96,7 @@ The two main assumptions in _palimpsest_ dictionaries are that:
 * Built-in support for [Eigen](https://eigen.tuxfamily.org/)
 * Serialize to and deserialize from [MessagePack](https://msgpack.org/)
 * Print dictionaries to standard output as [JSON](https://www.json.org/json-en.html)
-* [Extensible](#adding-custom-types) to custom types, as long as they deserialize unambiguously
+* Extensible to custom types, as long as they deserialize unambiguously
 
 ### Non-features
 
@@ -161,59 +161,19 @@ Note that by default [MPack](https://github.com/ludocode/mpack) will be built an
 
 ## Usage
 
-### Serialization to bytes
+Further usage examples including serialization, deserialization, and adding custom types, are provided in the [documentation](https://stephane-caron.github.io/palimpsest/).
 
-Dictionaries can be serialized (``palimpsest::Dictionary::serialize``) to vectors of bytes:
+## See also
 
-```cpp
-Dictionary world;
-std::vector<char> buffer;
-size_t size = world.serialize(buffer);
-```
+If you are looking for a C++ dictionary library, you may also be interested in the following alternatives:
 
-The function resizes the buffer automatically if needed, and returns the number of bytes of the serialized message.
+* [JSON for Modern C++](https://github.com/nlohmann/json): most user-friendly library of this list, serializes to MessagePack and other binary formats, but not designed for speed.
+* [Protocol Buffers](https://developers.google.com/protocol-buffers/): good fit if you have a fixed schema (keys don't change at all) that you want to serialize to and from.
+* [RapidJSON](https://github.com/Tencent/rapidjson/): low memory footprint, can serialize to MessagePack using other [related projects](https://github.com/Tencent/rapidjson/wiki/Related-Projects), but has linear lookup complexity as it stores dictionaries [as lists of key-value pairs](https://github.com/Tencent/rapidjson/issues/102).
+* [simdjson](https://github.com/simdjson/simdjson/): uses SIMD instructions and microparallel algorithms to parse JSON (reportedly 4x faster than RapidJSON and 25x faster than JSON for Modern C++).
 
-### Deserialization from bytes
-
-Dictionaries can be updated (``palimpsest::Dictionary::update``) from byte vectors:
-
-```cpp
-Dictionary foo;
-foo("bar") = 1;
-foo("foo") = 2;
-
-Dictionary bar;
-bar("bar") = 3;
-std::vector<char> buffer;
-size_t size = bar.serialize(buffer);
-
-foo.update(buffer.data(), size);  // OK, now foo("bar") == 3
-```
-
-### Adding custom types
-
-Adding a new custom type boils down to the following steps:
-
-* Add implicit type conversions to `Dictionary.h`
-* Add a read function specialization to `mpack/read.h`
-* Add a write function specialization to `mpack/Writer.h`
-* Add a write function specialization to `mpack/write.h`
-* Add a write function specialization to `json/write.h`
-
-Take a look at the existing types in these files and in unit tests for inspiration.
-
-## Q and A
-
-> Why isn't _palimpsest_ also distributed as a header-only library?
-
-The main blocker is that we set a custom flush function `mpack_std_vector_writer_flush` to our internal MPack writers. The [MPack Write API](https://ludocode.github.io/mpack/group__writer.html) requires a function pointer for that, and we define that function in [`Writer.cpp`](src/mpack/Writer.cpp). Open a PR if you have ideas to go around that!
-
-## Alternatives
+The code of _palimpsest_ was also inspired by the following libraries:
 
 * [`mc_rtc::Configuration`](https://github.com/jrl-umi3218/mc_rtc/blob/master/include/mc_rtc/Configuration.h) - similar API to palimpsest, based on RapidJSON (see below).
 * [`mc_rtc::DataStore`](https://github.com/jrl-umi3218/mc_rtc/blob/master/include/mc_rtc/DataStore.h) - can hold more general value types, like lambda functions, but does not serialize.
-* [`mjlib::telemetry`](https://github.com/mjbots/mjlib/tree/master/mjlib/telemetry#readme) - if your use case is more specifically telemetry in robotics or embedded systems.
-* [JSON for Modern C++](https://github.com/nlohmann/json) - most user-friendly library of this list, serializes to MessagePack and other binary formats, but not designed for speed.
-* [Protocol Buffers](https://developers.google.com/protocol-buffers/) - good fit if you have a fixed schema (keys don't change at all) that you want to serialize to and from.
-* [RapidJSON](https://github.com/Tencent/rapidjson/) - low memory footprint, can serialize to MessagePack using other [related projects](https://github.com/Tencent/rapidjson/wiki/Related-Projects), but has linear lookup complexity as it stores dictionaries [as lists of key-value pairs](https://github.com/Tencent/rapidjson/issues/102).
-* [simdjson](https://github.com/simdjson/simdjson/) - uses SIMD instructions and microparallel algorithms to parse JSON (reportedly 4x faster than RapidJSON and 25x faster than JSON for Modern C++).
+* [`mjlib::telemetry`](https://github.com/mjbots/mjlib/tree/master/mjlib/telemetry) - if your use case is more specifically telemetry in robotics or embedded systems.
