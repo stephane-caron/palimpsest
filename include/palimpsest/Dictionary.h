@@ -518,9 +518,7 @@ class Dictionary {
 
   /*! Update existing values from an MPack node.
    *
-   * @param[in] node MPack node. Its key-values should match those of the
-   *     dictionary. Keys that don't match will be ignored. Values whose type
-   *     does not match will raise an exception.
+   * @param[in] node MPack node.
    *
    * @throw TypeError if a deserialized object's type does not match the type
    *     of an existing entry in the dictionary.

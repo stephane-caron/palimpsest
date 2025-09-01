@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- docs: Clean up references to former `extend` function
+
 ## [2.3.2] - 2025-05-08
 
 ### Changed

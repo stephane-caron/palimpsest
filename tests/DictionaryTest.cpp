@@ -713,7 +713,7 @@ TEST(Dictionary, CannotGetValueFromEmpty) {
   ASSERT_DOUBLE_EQ(x, 0.);  // avoid compiler warning
 }
 
-TEST(Dictionary, Update) {
+TEST(Dictionary, UpdateWithSameKeys) {
   std::vector<char> buffer;
   mpack::Writer writer(buffer);
   writer.start_map(2);
@@ -729,17 +729,31 @@ TEST(Dictionary, Update) {
   dict("compact") = false;
   dict("schema") = 12u;
   dict.update(buffer.data(), size);
+
   ASSERT_EQ(dict("compact").as<bool>(), true);
   ASSERT_EQ(dict("schema").as<unsigned>(), 0u);
+}
+
+TEST(Dictionary, UpdateAddsKeyValues) {
+  std::vector<char> buffer;
+  mpack::Writer writer(buffer);
+  writer.start_map(2);
+  writer.write("compact");
+  writer.write(true);
+  writer.write("schema");
+  writer.write(0u);
+  writer.finish_map();
+  size_t size = writer.finish();
+  ASSERT_GT(buffer.size(), 0);
 
   Dictionary incomplete;
   incomplete("compact") = false;
   incomplete("zebra") = 42;
+  incomplete.update(buffer.data(), size);
 
-  // There's extra data, but intersection key types match so we don't throw
-  ASSERT_NO_THROW(incomplete.update(buffer.data(), size));
   ASSERT_EQ(incomplete("compact").as<bool>(), true);
   ASSERT_TRUE(incomplete.has("schema"));
+  ASSERT_EQ(incomplete("schema").as<unsigned>(), 0u);
   ASSERT_THROW(incomplete("schema")("use_uint_as_a_map") = "foo",
                std::runtime_error);
 }

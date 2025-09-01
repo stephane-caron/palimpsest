@@ -190,16 +190,6 @@ size_t size = bar.serialize(buffer);
 foo.update(buffer.data(), size);  // OK, now foo("bar") == 3
 ```
 
-Keys in the update stream that are not already in the dictionary are ignored:
-
-```cpp
-bar("new") = 4;
-size_t size = bar.serialize(buffer);
-foo.update(buffer.data(), size);  // no effect
-```
-
-Updates therefore behave complementarily to extensions: updating `{"a": 12}` with `{"a": 42, "b": 1}` results in `{"a": 42}` rather than `{"a": 12, "b": 1}`.
-
 ### Adding custom types
 
 Adding a new custom type boils down to the following steps:
