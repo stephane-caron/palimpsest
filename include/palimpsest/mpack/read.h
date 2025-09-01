@@ -32,7 +32,7 @@ void read(const mpack_node_t node, T& value) {
           typeid(T).name() + "\"");
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -50,7 +50,7 @@ inline void read(const mpack_node_t node, bool& value) {
   value = mpack_node_bool(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -69,7 +69,7 @@ inline void read(const mpack_node_t node, int8_t& value) {
   value = mpack_node_i8(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -88,7 +88,7 @@ inline void read(const mpack_node_t node, int16_t& value) {
   value = mpack_node_i16(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -107,7 +107,7 @@ inline void read(const mpack_node_t node, int32_t& value) {
   value = mpack_node_i32(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -126,7 +126,7 @@ inline void read(const mpack_node_t node, int64_t& value) {
   value = mpack_node_i64(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -144,7 +144,7 @@ inline void read(const mpack_node_t node, uint8_t& value) {
   value = mpack_node_u8(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -162,7 +162,7 @@ inline void read(const mpack_node_t node, uint16_t& value) {
   value = mpack_node_u16(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -180,7 +180,7 @@ inline void read(const mpack_node_t node, uint32_t& value) {
   value = mpack_node_u32(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -198,7 +198,7 @@ inline void read(const mpack_node_t node, uint64_t& value) {
   value = mpack_node_u64(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -222,7 +222,7 @@ inline void read(const mpack_node_t node, float& value) {
   value = mpack_node_float(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -246,7 +246,7 @@ inline void read(const mpack_node_t node, double& value) {
   value = mpack_node_double(node);
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -264,7 +264,7 @@ inline void read(const mpack_node_t node, std::string& value) {
   value = std::string{mpack_node_str(node), mpack_node_strlen(node)};
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -284,7 +284,7 @@ inline void read(const mpack_node_t node, Eigen::Vector2d& value) {
   read<double>(mpack_node_array_at(node, 1), value.y());
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -305,7 +305,7 @@ inline void read(const mpack_node_t node, Eigen::Vector3d& value) {
   read<double>(mpack_node_array_at(node, 2), value.z());
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -327,7 +327,7 @@ inline void read(const mpack_node_t node, Eigen::VectorXd& value) {
   }
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.
@@ -349,7 +349,7 @@ inline void read(const mpack_node_t node, Eigen::Quaterniond& value) {
   read<double>(mpack_node_array_at(node, 3), value.z());
 }
 
-/*! Specialization of @ref mpack_read<T>(node, value)
+/*! Specialization of read<T>(node, value)
  *
  * @param[in] node MPack node to read the value from.
  * @param[out] value Reference to write the value to.

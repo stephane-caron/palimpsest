@@ -39,73 +39,73 @@ void write(mpack_writer_t* writer, const T& value) {
                       typeid(T).name() + "\"");
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const bool& value) {
   mpack_write_bool(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const int8_t& value) {
   mpack_write_i8(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const int16_t& value) {
   mpack_write_i16(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const int32_t& value) {
   mpack_write_i32(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const int64_t& value) {
   mpack_write_i64(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const uint8_t& value) {
   mpack_write_u8(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const uint16_t& value) {
   mpack_write_u16(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const uint32_t& value) {
   mpack_write_u32(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const uint64_t& value) {
   mpack_write_u64(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const float& value) {
   mpack_write_float(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const double& value) {
   mpack_write_double(writer, value);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const std::string& value) {
   mpack_write_str(writer, value.c_str(), static_cast<uint32_t>(value.size()));
@@ -137,7 +137,7 @@ inline void write_vector(mpack_writer_t* writer, const T& vector) {
   }
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const Eigen::Vector2d& value) {
   mpack_start_array(writer, 2);
@@ -145,7 +145,7 @@ inline void write(mpack_writer_t* writer, const Eigen::Vector2d& value) {
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const Eigen::Vector3d& value) {
   mpack_start_array(writer, 3);
@@ -153,7 +153,7 @@ inline void write(mpack_writer_t* writer, const Eigen::Vector3d& value) {
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const Eigen::VectorXd& value) {
   mpack_start_array(writer, static_cast<size_t>(value.size()));
@@ -161,7 +161,7 @@ inline void write(mpack_writer_t* writer, const Eigen::VectorXd& value) {
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const Eigen::Quaterniond& value) {
   mpack_start_array(writer, 4);
@@ -172,7 +172,7 @@ inline void write(mpack_writer_t* writer, const Eigen::Quaterniond& value) {
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const Eigen::Matrix3d& value) {
   mpack_start_array(writer, 9);
@@ -180,7 +180,7 @@ inline void write(mpack_writer_t* writer, const Eigen::Matrix3d& value) {
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer,
                   const std::vector<std::string>& value) {
@@ -191,7 +191,7 @@ inline void write(mpack_writer_t* writer,
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer, const std::vector<double>& value) {
   mpack_start_array(writer, value.size());
@@ -201,7 +201,7 @@ inline void write(mpack_writer_t* writer, const std::vector<double>& value) {
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer,
                   const std::vector<Eigen::Vector2d>& value) {
@@ -212,7 +212,7 @@ inline void write(mpack_writer_t* writer,
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer,
                   const std::vector<Eigen::Vector3d>& value) {
@@ -223,7 +223,7 @@ inline void write(mpack_writer_t* writer,
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer,
                   const std::vector<Eigen::VectorXd>& value) {
@@ -234,7 +234,7 @@ inline void write(mpack_writer_t* writer,
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer,
                   const std::vector<Eigen::Quaterniond>& value) {
@@ -245,7 +245,7 @@ inline void write(mpack_writer_t* writer,
   mpack_finish_array(writer);
 }
 
-//! Specialization of @ref mpack_write<T>(writer, value)
+//! Specialization of write<T>(writer, value)
 template <>
 inline void write(mpack_writer_t* writer,
                   const std::vector<Eigen::Matrix3d>& value) {

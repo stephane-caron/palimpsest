@@ -203,7 +203,7 @@ inline void write(std::ostream &stream, const Eigen::Quaterniond &quat) {
 /*! Write a 3x3 matrix as nested JSON arrays to an output stream.
  *
  * @param[out] stream Output stream.
- * @param[in] quat Quaternion.
+ * @param[in] matrix 3x3 matrix.
  */
 template <>
 inline void write(std::ostream &stream, const Eigen::Matrix3d &matrix) {
