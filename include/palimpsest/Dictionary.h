@@ -429,7 +429,7 @@ class Dictionary {
    * the string is cast to an std::string.
    */
   Dictionary &operator=(const char *c_string) {
-    return operator=<std::string>(std::string(c_string));
+    return operator= <std::string>(std::string(c_string));
   }
 
   /*! Remove a key-value pair from the dictionary.
@@ -718,8 +718,8 @@ namespace fmt {
 template <>
 struct formatter<palimpsest::Dictionary> : public formatter<string_view> {
   template <typename FormatContext>
-  auto format(const palimpsest::Dictionary &dict, FormatContext &ctx)
-      -> decltype(ctx.out()) {
+  auto format(const palimpsest::Dictionary &dict,
+              FormatContext &ctx) -> decltype(ctx.out()) {
     std::ostringstream oss;
     oss << dict;
     return formatter<string_view>::format(oss.str(), ctx);
