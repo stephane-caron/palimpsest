@@ -994,4 +994,26 @@ TEST(Dictionary, OneDimensionalVector) {
                palimpsest::exceptions::TypeError);
 }
 
+TEST(Dictionary, UpdateFromDictionary) {
+  Dictionary dict1, dict2;
+
+  // Set up first dictionary
+  dict1("name") = std::string("first");
+  dict1("value") = 42;
+
+  // Set up second dictionary
+  dict2("name") = std::string("second");
+  dict2("extra") = 3.14;
+  dict2("flag") = true;
+
+  // Test the new update function
+  dict1.update(dict2);
+
+  // Check that dict1 was updated with values from dict2
+  ASSERT_EQ(dict1.get<std::string>("name"), "second");  // overwritten
+  ASSERT_EQ(dict1.get<int>("value"), 42);               // preserved
+  ASSERT_DOUBLE_EQ(dict1.get<double>("extra"), 3.14);   // added
+  ASSERT_EQ(dict1.get<bool>("flag"), true);             // added
+}
+
 }  // namespace palimpsest

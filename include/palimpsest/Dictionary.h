@@ -525,6 +525,15 @@ class Dictionary {
    */
   void update(mpack_node_t node);
 
+  /*! Update dictionary from another dictionary.
+   *
+   * @param[in] other Dictionary to update from.
+   *
+   * @throw TypeError if deserialized data types don't match those of the
+   *     corresponding objects in the dictionary.
+   */
+  void update(const Dictionary &other);
+
   //! Allow implicit conversion to (bool &).
   operator bool &() { return this->as<bool>(); }
 

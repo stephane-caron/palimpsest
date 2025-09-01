@@ -85,6 +85,12 @@ void Dictionary::update(mpack_node_t node) {
   }
 }
 
+void Dictionary::update(const Dictionary &other) {
+  std::vector<char> buffer;
+  size_t size = other.serialize(buffer);
+  update(buffer.data(), size);
+}
+
 void Dictionary::insert_at_key_(const std::string &key,
                                 const mpack_node_t &value) {
   switch (mpack_node_type(value)) {

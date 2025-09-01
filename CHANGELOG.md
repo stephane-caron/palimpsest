@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Add an `update` override to update from another dictionary
+
 ### Fixed
 
 - docs: Clean up references to former `extend` function
