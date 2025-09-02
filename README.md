@@ -102,7 +102,7 @@ The two main assumptions in _palimpsest_ dictionaries are that:
 
 * Prioritizes speed over user-friendliness
 * Array values are mostly limited to Eigen tensors (matrix, quaternion, vector)
-* Copy constructors are disabled
+* No copy constructor (but a move constructor)
 * Custom types need to deserialize unambiguously
 * Shallow and deep copies are not implemented ([PRs welcome](CONTRIBUTING.md))
 
@@ -159,21 +159,16 @@ make install
 
 Note that by default [MPack](https://github.com/ludocode/mpack) will be built and installed from the [``third_party``](https://github.com/stephane-caron/palimpsest/tree/main/third_party) folder. Set `-DBUILD_MPACK=OFF` if you already have MPack 1.1 or later installed on your system.
 
-## Usage
+## Going further
 
 Further usage examples including serialization, deserialization, and adding custom types, are provided in the [documentation](https://stephane-caron.github.io/palimpsest/).
 
 ## See also
 
-If you are looking for a C++ dictionary library, you may also be interested in the following alternatives:
-
 * [JSON for Modern C++](https://github.com/nlohmann/json): most user-friendly library of this list, serializes to MessagePack and other binary formats, but not designed for speed.
-* [Protocol Buffers](https://developers.google.com/protocol-buffers/): good fit if you have a fixed schema (keys don't change at all) that you want to serialize to and from.
-* [RapidJSON](https://github.com/Tencent/rapidjson/): low memory footprint, can serialize to MessagePack using other [related projects](https://github.com/Tencent/rapidjson/wiki/Related-Projects), but has linear lookup complexity as it stores dictionaries [as lists of key-value pairs](https://github.com/Tencent/rapidjson/issues/102).
-* [simdjson](https://github.com/simdjson/simdjson/): uses SIMD instructions and microparallel algorithms to parse JSON (reportedly 4x faster than RapidJSON and 25x faster than JSON for Modern C++).
-
-The code of _palimpsest_ was also inspired by the following libraries:
-
 * [`mc_rtc::Configuration`](https://github.com/jrl-umi3218/mc_rtc/blob/master/include/mc_rtc/Configuration.h) - similar API to palimpsest, based on RapidJSON (see below).
 * [`mc_rtc::DataStore`](https://github.com/jrl-umi3218/mc_rtc/blob/master/include/mc_rtc/DataStore.h) - can hold more general value types, like lambda functions, but does not serialize.
 * [`mjlib::telemetry`](https://github.com/mjbots/mjlib/tree/master/mjlib/telemetry) - if your use case is more specifically telemetry in robotics or embedded systems.
+* [Protocol Buffers](https://developers.google.com/protocol-buffers/): good fit if you have a fixed schema (keys don't change at all) that you want to serialize to and from.
+* [RapidJSON](https://github.com/Tencent/rapidjson/): low memory footprint, can serialize to MessagePack using other [related projects](https://github.com/Tencent/rapidjson/wiki/Related-Projects), but has linear lookup complexity as it stores dictionaries [as lists of key-value pairs](https://github.com/Tencent/rapidjson/issues/102).
+* [simdjson](https://github.com/simdjson/simdjson/): uses SIMD instructions and microparallel algorithms to parse JSON (reportedly 4x faster than RapidJSON and 25x faster than JSON for Modern C++).
