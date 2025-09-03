@@ -6,6 +6,12 @@ load("//tools/lint:lint.bzl", "add_lint_tests")
 
 package(default_visibility = ["//visibility:public"])
 
+cc_binary(
+    name = "dictionary_difference",
+    srcs = ["dictionary_difference.cpp"],
+    deps = ["@palimpsest"],
+)
+
 py_binary(
     name = "load_dictionary",
     srcs = ["load_dictionary.py"],
