@@ -1,4 +1,4 @@
-# 👷 Contributing
+# Contributing
 
 There are many ways you can contribute to palimpsest, all of them welcome! Here are some ideas of increasing difficulty:
 
