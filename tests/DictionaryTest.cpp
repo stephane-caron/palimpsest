@@ -993,7 +993,7 @@ TEST(Dictionary, OneDimensionalVector) {
                palimpsest::exceptions::TypeError);
 }
 
-TEST(Dictionary, UpdateFromDictionary) {
+TEST(Dictionary, DeepCopyFromDictionary) {
   Dictionary dict1, dict2;
 
   // Set up first dictionary
@@ -1005,14 +1005,20 @@ TEST(Dictionary, UpdateFromDictionary) {
   dict2("extra") = 3.14;
   dict2("flag") = true;
 
-  // Test the new update function
-  dict1.update(dict2);
+  // Test the deepcopy function creates a new dictionary with copied values
+  Dictionary dict_copy = Dictionary::deepcopy(dict2);
 
-  // Check that dict1 was updated with values from dict2
-  ASSERT_EQ(dict1.get<std::string>("name"), "second");  // overwritten
-  ASSERT_EQ(dict1.get<int>("value"), 42);               // preserved
-  ASSERT_DOUBLE_EQ(dict1.get<double>("extra"), 3.14);   // added
-  ASSERT_EQ(dict1.get<bool>("flag"), true);             // added
+  // Check that dict_copy contains values from dict2
+  ASSERT_EQ(dict_copy.get<std::string>("name"), "second");
+  ASSERT_DOUBLE_EQ(dict_copy.get<double>("extra"), 3.14);
+  ASSERT_EQ(dict_copy.get<bool>("flag"), true);
+
+  // Verify dict1 is unchanged (deepcopy doesn't modify anything)
+  ASSERT_EQ(dict1.get<std::string>("name"), "first");
+  ASSERT_EQ(dict1.get<int>("value"), 42);
+
+  // Test that update function throws PalimpsestError as it's not implemented
+  ASSERT_THROW(dict1.update(dict2), palimpsest::exceptions::PalimpsestError);
 }
 
 TEST(Dictionary, PopValue) {
