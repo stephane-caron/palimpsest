@@ -112,25 +112,9 @@ Check out the existing [alternatives](https://github.com/stephane-caron/palimpse
 
 ### Bazel
 
-Add the following to your `WORKSPACE` file:
+Add to your `WORKSPACE` file the `http_archive` instruction from the [release page](https://github.com/stephane-caron/palimpsest/releases/tag/v2.4.0).
 
-```python
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-http_archive(
-    name = "palimpsest",
-    sha256 = "4395f1d4e1c6d19bbc754bdafc489aff6a406d660c9b62e08cf99ca8a53c2789",
-    strip_prefix = "palimpsest-2.3.2",
-    url = "https://github.com/stephane-caron/palimpsest/archive/refs/tags/v2.3.2.tar.gz",
-)
-
-load("@palimpsest//tools/workspace:default.bzl", add_palimpsest_repositories = "add_default_repositories")
-
-# This adds dependencies such as @fmt and @mpack for building palimpsest targets
-add_palimpsest_repositories()
-```
-
-You can then build C++ targets that depend on ``@palimpsest``:
+You can then define C++ targets that depend on ``@palimpsest``:
 
 ```python
 cc_binary(
