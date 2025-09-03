@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Add `pop` function to remove a specific key and return its value
 - examples: Show how to use palimpsest dictionaries like Python ones
 
 ## [2.4.0] - 2025-09-03
