@@ -1016,4 +1016,121 @@ TEST(Dictionary, UpdateFromDictionary) {
   ASSERT_EQ(dict1.get<bool>("flag"), true);             // added
 }
 
+TEST(Dictionary, PopValue) {
+  Dictionary dict;
+  dict.insert<int>("foo", 42);
+  dict.insert<std::string>("bar", "hello");
+  dict.insert<double>("pi", 3.14159);
+
+  // Test pop without default - returns value and removes key
+  ASSERT_EQ(dict.pop<int>("foo"), 42);
+  ASSERT_FALSE(dict.has("foo"));
+
+  // Test pop for string
+  ASSERT_EQ(dict.pop<std::string>("bar"), "hello");
+  ASSERT_FALSE(dict.has("bar"));
+
+  // Test pop for double
+  ASSERT_DOUBLE_EQ(dict.pop<double>("pi"), 3.14159);
+  ASSERT_FALSE(dict.has("pi"));
+
+  // Dictionary should now be empty
+  ASSERT_TRUE(dict.is_empty());
+}
+
+TEST(Dictionary, PopWithDefault) {
+  Dictionary dict;
+  dict.insert<int>("existing", 42);
+
+  // Test pop with default for existing key - should return value and remove key
+  ASSERT_EQ(dict.pop<int>("existing", 999), 42);
+  ASSERT_FALSE(dict.has("existing"));
+
+  // Test pop with default for non-existing key - should return default and not
+  // throw
+  ASSERT_EQ(dict.pop<int>("non_existing", 999), 999);
+  ASSERT_FALSE(dict.has("non_existing"));
+
+  // Test pop with default for different types
+  ASSERT_DOUBLE_EQ(dict.pop<double>("missing_double", 2.718), 2.718);
+  ASSERT_EQ(dict.pop<std::string>("missing_string", "default"), "default");
+  ASSERT_EQ(dict.pop<bool>("missing_bool", true), true);
+}
+
+TEST(Dictionary, PopNonExistentKey) {
+  Dictionary dict;
+  dict.insert<int>("foo", 42);
+
+  // Test pop without default on non-existent key should throw KeyError
+  ASSERT_THROW(dict.pop<int>("nonexistent"), KeyError);
+
+  // Original key should still exist
+  ASSERT_TRUE(dict.has("foo"));
+  ASSERT_EQ(dict.get<int>("foo"), 42);
+}
+
+TEST(Dictionary, PopWrongType) {
+  Dictionary dict;
+  dict.insert<int>("number", 42);
+
+  // Test pop with wrong type should throw TypeError
+  ASSERT_THROW(dict.pop<std::string>("number"), TypeError);
+  ASSERT_THROW(dict.pop<double>("number"), TypeError);
+
+  // Key should still exist after failed pop
+  ASSERT_TRUE(dict.has("number"));
+  ASSERT_EQ(dict.get<int>("number"), 42);
+}
+
+TEST(Dictionary, PopWrongTypeWithDefault) {
+  Dictionary dict;
+  dict.insert<int>("number", 42);
+
+  // Test pop with wrong type and default should throw TypeError (not return
+  // default)
+  ASSERT_THROW(dict.pop<std::string>("number", "default"), TypeError);
+  ASSERT_THROW(dict.pop<double>("number", 3.14), TypeError);
+
+  // Key should still exist after failed pop
+  ASSERT_TRUE(dict.has("number"));
+  ASSERT_EQ(dict.get<int>("number"), 42);
+}
+
+TEST(Dictionary, PopFromDictionary) {
+  Dictionary dict;
+  dict("nested").insert<int>("value", 123);
+
+  // Test pop from nested dictionary (should throw TypeError)
+  ASSERT_THROW(dict.pop<int>("nested"), TypeError);
+  ASSERT_THROW(dict.pop<int>("nested", 999), TypeError);
+
+  // Nested dictionary should still exist
+  ASSERT_TRUE(dict.has("nested"));
+  ASSERT_TRUE(dict("nested").has("value"));
+  ASSERT_EQ(dict("nested").get<int>("value"), 123);
+}
+
+TEST(Dictionary, PopEigenTypes) {
+  Dictionary dict;
+  dict.insert<Eigen::Vector3d>("position", 1.0, 2.0, 3.0);
+  dict.insert<Eigen::Quaterniond>("orientation", 1.0, 0.0, 0.0, 0.0);
+
+  // Test pop with Eigen types
+  Eigen::Vector3d pos = dict.pop<Eigen::Vector3d>("position");
+  ASSERT_DOUBLE_EQ(pos.x(), 1.0);
+  ASSERT_DOUBLE_EQ(pos.y(), 2.0);
+  ASSERT_DOUBLE_EQ(pos.z(), 3.0);
+  ASSERT_FALSE(dict.has("position"));
+
+  // Test pop with default for Eigen types
+  Eigen::Vector3d default_pos(0.0, 0.0, 0.0);
+  Eigen::Vector3d result =
+      dict.pop<Eigen::Vector3d>("missing_pos", default_pos);
+  ASSERT_TRUE(result.isApprox(default_pos));
+
+  Eigen::Quaterniond quat = dict.pop<Eigen::Quaterniond>("orientation");
+  ASSERT_DOUBLE_EQ(quat.w(), 1.0);
+  ASSERT_FALSE(dict.has("orientation"));
+}
+
 }  // namespace palimpsest
