@@ -438,6 +438,63 @@ class Dictionary {
    */
   void remove(const std::string &key) noexcept;
 
+  /*! Remove a key-value pair from the dictionary and return its value.
+   *
+   * @param[in] key Key to remove.
+   * @return Value that was stored at the key.
+   *
+   * @throw KeyError if there is no object at this key.
+   * @throw TypeError if there is an object at this key but it is not a value, or
+   *     it is but its type does not match T.
+   *
+   * @note This function has the same semantics as Python's dict.pop(key).
+   */
+  template <typename T>
+  T pop(const std::string &key) {
+    const T value = get<T>(key);
+    remove(key);
+    return value;
+  }
+
+  /*! Remove a key-value pair from the dictionary and return its value, or
+   * return a default value if the key doesn't exist.
+   *
+   * @param[in] key Key to remove.
+   * @param[in] default_value Default value to return if key doesn't exist.
+   * @return Value that was stored at the key, or default_value if key doesn't
+   * exist.
+   *
+   * @throw TypeError if there is an object at this key but it is not a value, or
+   *     it is but its type does not match T.
+   *
+   * @note This function has the same semantics as Python's dict.pop(key, default).
+   */
+  template <typename T>
+  T pop(const std::string &key, const T &default_value) {
+    auto it = map_.find(key);
+    if (it == map_.end()) {
+      return default_value;
+    }
+    if (it->second->is_map()) {
+      throw TypeError(__FILE__, __LINE__,
+                      "Object at key \"" + key +
+                          "\" is a dictionary, cannot pop a single value "
+                          "from it.");
+    }
+    try {
+      const T value = it->second->value_.get_reference<T>();
+      remove(key);
+      return value;
+    } catch (const TypeError &e) {
+      throw TypeError(
+          __FILE__, __LINE__,
+          "Object for key \"" + key +
+              "\" does not have the same type as the requested type. Stored " +
+              it->second->value_.type_name() + " but requested " +
+              typeid(T).name() + ".");
+    }
+  }
+
   //! Remove all entries from the dictionary.
   void clear() noexcept;
 
