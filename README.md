@@ -6,7 +6,7 @@
 ![C++ version](https://img.shields.io/badge/C++-17/20-blue.svg?style=flat)
 [![Release](https://img.shields.io/github/v/release/stephane-caron/palimpsest.svg?sort=semver)](https://github.com/stephane-caron/palimpsest/releases)
 
-The Palimpsest library implements a `Dictionary` type for C++ meant for fast value updates and serialization. It is called [palimpsest](https://en.wiktionary.org/wiki/palimpsest#Noun) because dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
+The palimpsest library implements a `Dictionary` type for C++ meant for fast value updates and serialization. It is called [palimpsest](https://en.wiktionary.org/wiki/palimpsest#Noun) because dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
 
 ## Example
 
@@ -84,7 +84,7 @@ Implementing one of the missing functions is a great way to [contribute](CONTRIB
 
 All design decisions have their pros and cons. Take a look at the features and non-features below to decide if it is also a fit for _your_ use case.
 
-The two main assumptions in Palimpsest dictionaries are that:
+The two main assumptions in palimpsest dictionaries are that:
 
 * **Keys** are strings.
 * **Values** hold either a sub-dictionary or a type that can be unambiguously serialized.

@@ -42,6 +42,12 @@ cc_binary(
 )
 
 cc_binary(
+    name = "use_like_python_dict",
+    srcs = ["use_like_python_dict.cpp"],
+    deps = ["@palimpsest"],
+)
+
+cc_binary(
     name = "write_dictionary",
     srcs = ["write_dictionary.cpp"],
     deps = ["@palimpsest"],

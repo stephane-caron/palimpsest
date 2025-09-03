@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- examples: Show how to use palimpsest dictionaries like Python ones
+
 ## [2.4.0] - 2025-09-03
 
 ### Added
@@ -113,7 +117,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - 2022-04-25
 
-This is the initial release of Palimpsest, a small C++ library that provides a ``Dictionary`` type meant for fast value updates and serialization. It is called palimpsest because these dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
+This is the initial release of palimpsest, a small C++ library that provides a ``Dictionary`` type meant for fast value updates and serialization. It is called palimpsest because these dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
 
 [unreleased]: https://github.com/qpsolvers/qpsolvers/compare/v2.4.0...HEAD
 [2.4.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.2...v2.4.0

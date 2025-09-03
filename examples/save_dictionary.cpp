@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2022 Stéphane Caron
+/*
+ * This example shows how to save a dictionary to a serialized MessagePack file.
+ */
 
 #include <palimpsest/Dictionary.h>
 

@@ -1,6 +1,6 @@
 # 👷 Contributing
 
-There are many ways you can contribute to Palimpsest, all of them welcome! Here are some ideas of increasing difficulty:
+There are many ways you can contribute to palimpsest, all of them welcome! Here are some ideas of increasing difficulty:
 
 - Check out the [documentation](https://stephane-caron.github.io/palimpsest/) and report mistakes or ask questions
 - Try out the [examples](https://github.com/stephane-caron/palimpsest/tree/main/examples) and report any issue
