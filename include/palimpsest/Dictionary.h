@@ -581,16 +581,7 @@ class Dictionary {
    * @throw TypeError if deserialized data types don't match those of the
    *     corresponding objects in the dictionary.
    */
-  void update(const char *data, size_t size);
-
-  /*! Update existing values from an MPack node.
-   *
-   * @param[in] node MPack node.
-   *
-   * @throw TypeError if a deserialized object's type does not match the type
-   *     of an existing entry in the dictionary.
-   */
-  void update(mpack_node_t node);
+  void deserialize(const char *data, size_t size);
 
   /*! Compute the difference between this dictionary and another.
    *
@@ -736,6 +727,15 @@ class Dictionary {
   }
 
  private:
+  /*! Update existing values from an MPack node.
+   *
+   * @param[in] node MPack node.
+   *
+   * @throw TypeError if a deserialized object's type does not match the type
+   *     of an existing entry in the dictionary.
+   */
+  void deserialize_(mpack_node_t node);
+
   /*! Get a const reference to the object at a given key.
    *
    * @param[in] key Key to the object.

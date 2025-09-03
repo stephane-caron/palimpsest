@@ -28,7 +28,7 @@ bar("bar") = 3;
 std::vector<char> buffer;
 size_t size = bar.serialize(buffer);
 
-foo.update(buffer.data(), size);  // OK, now foo("bar") == 3
+foo.deserialize(buffer.data(), size);  // OK, now foo("bar") == 3
 ```
 
 ## Difference between dictionaries

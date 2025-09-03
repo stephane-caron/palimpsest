@@ -353,7 +353,7 @@ TEST_F(DictionaryTest, Serialization) {
   checker.insert<Eigen::VectorXd>("longer_vector", Eigen::VectorXd(42));
 
   // Deserialize and check that recover all serialized values
-  checker.update(buffer.data(), size);
+  checker.deserialize(buffer.data(), size);
   ASSERT_TRUE(checker("sure"));
   ASSERT_EQ(checker("foo").as<int>(), 12);
   ASSERT_EQ(checker("int8_t").as<int8_t>(), -8);
@@ -391,7 +391,7 @@ TEST_F(DictionaryTest, Serialization) {
   checker("child_1").insert<Eigen::Vector3d>("position", 0., 0., 0.);
   checker("child_1").insert<Eigen::Quaterniond>("orientation", 0., 0., 1., 0.);
   checker("child_2").insert<Eigen::Vector3d>("position", 0., 0., 0.);
-  checker.update(buffer.data(), size);
+  checker.deserialize(buffer.data(), size);
   ASSERT_TRUE(checker.has("child_1"));
   ASSERT_TRUE(checker.has("child_2"));
   ASSERT_TRUE(
@@ -442,7 +442,7 @@ TEST(Dictionary, AsCastThenSerialize) {
   checker("well") = -10;
   checker("this")("is")("quite")("deep").insert<Eigen::Quaterniond>("quat", 1.,
                                                                     0., 0., 0.);
-  checker.update(buffer.data(), size);
+  checker.deserialize(buffer.data(), size);
   ASSERT_EQ(checker("well").as<int>(), -10);
   ASSERT_TRUE(checker("this")("is")("quite")("deep")("quat")
                   .as<Eigen::Quaterniond>()
@@ -474,7 +474,7 @@ TEST(Dictionary, DeserializeUnsignedWhenPossible) {
   std::vector<char> decoded = base64::decode<std::vector<char>>(packed);
 
   Dictionary dict;
-  dict.update(decoded.data(), decoded.size());
+  dict.deserialize(decoded.data(), decoded.size());
   ASSERT_EQ(dict.get<int>("int"), -1);
   ASSERT_EQ(dict.get<unsigned>("maybe_uint"), 1);
   ASSERT_THROW(dict.get<int>("maybe_uint"), TypeError);
@@ -713,7 +713,7 @@ TEST(Dictionary, CannotGetValueFromEmpty) {
   ASSERT_DOUBLE_EQ(x, 0.);  // avoid compiler warning
 }
 
-TEST(Dictionary, UpdateWithSameKeys) {
+TEST(Dictionary, DeserializeWithSameKeys) {
   std::vector<char> buffer;
   mpack::Writer writer(buffer);
   writer.start_map(2);
@@ -728,13 +728,13 @@ TEST(Dictionary, UpdateWithSameKeys) {
   Dictionary dict;
   dict("compact") = false;
   dict("schema") = 12u;
-  dict.update(buffer.data(), size);
+  dict.deserialize(buffer.data(), size);
 
   ASSERT_EQ(dict("compact").as<bool>(), true);
   ASSERT_EQ(dict("schema").as<unsigned>(), 0u);
 }
 
-TEST(Dictionary, UpdateAddsKeyValues) {
+TEST(Dictionary, DeserializationAddsKeyValues) {
   std::vector<char> buffer;
   mpack::Writer writer(buffer);
   writer.start_map(2);
@@ -749,7 +749,7 @@ TEST(Dictionary, UpdateAddsKeyValues) {
   Dictionary incomplete;
   incomplete("compact") = false;
   incomplete("zebra") = 42;
-  incomplete.update(buffer.data(), size);
+  incomplete.deserialize(buffer.data(), size);
 
   ASSERT_EQ(incomplete("compact").as<bool>(), true);
   ASSERT_TRUE(incomplete.has("schema"));
@@ -758,7 +758,7 @@ TEST(Dictionary, UpdateAddsKeyValues) {
                std::runtime_error);
 }
 
-TEST(Dictionary, UpdateSignedInt) {
+TEST(Dictionary, DeserializeSignedInt) {
   std::vector<char> buffer;
   mpack::Writer writer(buffer);
   writer.start_map(1);
@@ -771,7 +771,7 @@ TEST(Dictionary, UpdateSignedInt) {
   Dictionary dict;
   dict.insert<int>("foo", 0);
   ASSERT_EQ(dict("foo").as<int>(), 0);
-  ASSERT_NO_THROW(dict.update(buffer.data(), size));
+  ASSERT_NO_THROW(dict.deserialize(buffer.data(), size));
   ASSERT_EQ(dict("foo").as<int>(), 12);
 }
 
@@ -807,18 +807,17 @@ TEST(Dictionary, GetWithDefaultValueChecksType) {
   ASSERT_THROW(dict.get<int>("bar", 42), TypeError);
 }
 
-TEST(Dictionary, UpdateFromNilNode) {
-  mpack_tree_t tree;
-  mpack_node_t nil_node;
-  nil_node.data = &tree.nil_node;
-  nil_node.data->type = mpack_type_nil;
-  nil_node.tree = &tree;
-  ASSERT_EQ(mpack_node_type(nil_node), mpack_type_nil);
+TEST(Dictionary, DeserializeFromEmptyBuffer) {
+  std::vector<char> buffer;
+  mpack::Writer writer(buffer);
+  writer.start_map(0);
+  writer.finish_map();
+  size_t size = writer.finish();
 
   Dictionary dict;
-  ASSERT_NO_THROW(dict.update(nil_node));  // dict empty
-  dict("foo") = "bar";
-  ASSERT_NO_THROW(dict.update(nil_node));  // dict non-empty
+  ASSERT_NO_THROW(dict.deserialize(buffer.data(), size));  // dict empty
+  dict("foo") = std::string("bar");
+  ASSERT_NO_THROW(dict.deserialize(buffer.data(), size));  // dict non-empty
 }
 
 TEST(Dictionary, WriteAndRead) {
@@ -881,7 +880,7 @@ TEST(Dictionary, SerializeSizeT) {
 
   serialized("logger")("last_size") = static_cast<size_t>(42);
   size_t buffer_size = serialized.serialize(buffer);
-  deserialized.update(buffer.data(), buffer_size);
+  deserialized.deserialize(buffer.data(), buffer_size);
 
   size_t before = serialized("logger")("last_size").as<size_t>();
   unsigned after = deserialized("logger")("last_size");
@@ -905,7 +904,7 @@ TEST(Dictionary, SerializeVectorDouble) {
   // serialization for convenience, but expect Eigen vectors to be used
   // primarily.
   Dictionary deserialized;
-  deserialized.update(buffer.data(), size);
+  deserialized.deserialize(buffer.data(), size);
   const auto &deserialized_vector_xd =
       deserialized("vector_double").as<Eigen::VectorXd>();
   for (unsigned i = 0; i < 5; ++i) {
@@ -927,7 +926,7 @@ TEST(Dictionary, SerializeVectorXd) {
 
   // Deserialize and check that we recover all serialized values
   Dictionary deserialized;
-  deserialized.update(buffer.data(), size);
+  deserialized.deserialize(buffer.data(), size);
   const auto &deserialized_vector_xd =
       deserialized("vector_xd").as<Eigen::VectorXd>();
   for (unsigned i = 0; i < 5; ++i) {
@@ -954,7 +953,7 @@ TEST(Dictionary, SerializeVectorOfVectorXd) {
 
   // Deserialize and check that we recover all serialized values
   Dictionary deserialized;
-  deserialized.update(buffer.data(), size);
+  deserialized.deserialize(buffer.data(), size);
   const auto &deserialized_vec_vec =
       deserialized("vec_vec").as<std::vector<Eigen::VectorXd>>();
   ASSERT_EQ(deserialized_vec_vec.size(), 3);
@@ -979,7 +978,7 @@ TEST(Dictionary, OneDimensionalVector) {
 
   // Deserialize and check that we recover the serialized vector
   Dictionary deserialized;
-  deserialized.update(buffer.data(), size);
+  deserialized.deserialize(buffer.data(), size);
   const auto &deserialized_vector = deserialized("foo").as<Eigen::VectorXd>();
   ASSERT_EQ(deserialized_vector.size(), 1);
   ASSERT_DOUBLE_EQ(deserialized_vector(0), 0.42);
@@ -990,7 +989,7 @@ TEST(Dictionary, OneDimensionalVector) {
 
   Dictionary bar;
   bar("foo") = 1.2;  // different from above
-  ASSERT_THROW(bar.update(buffer.data(), size),
+  ASSERT_THROW(bar.deserialize(buffer.data(), size),
                palimpsest::exceptions::TypeError);
 }
 

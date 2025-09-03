@@ -9,6 +9,12 @@ All notable changes to this project will be documented in this file.
 - Add `pop` function to remove a specific key and return its value
 - examples: Show how to use palimpsest dictionaries like Python ones
 
+### Changed
+
+- **Breaking:** don't expose internal MPack nodes in palimpsest API
+- **Breaking:** Rename `Dictionary::update(data, size)` to `deserialize`
+- **Breaking:** Rename `Dictionary::update(mpack_node_t)` to private `deserialize_`
+
 ## [2.4.0] - 2025-09-03
 
 ### Added

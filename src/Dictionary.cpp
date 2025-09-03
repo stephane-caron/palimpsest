@@ -41,24 +41,24 @@ void Dictionary::clear() noexcept {
 void Dictionary::update(const Dictionary &other) {
   std::vector<char> buffer;
   size_t size = other.serialize(buffer);
-  update(buffer.data(), size);
+  deserialize(buffer.data(), size);
 }
 
-void Dictionary::update(const char *data, size_t size) {
+void Dictionary::deserialize(const char *data, size_t size) {
   mpack_tree_t tree;
   mpack_tree_init_data(&tree, data, size);
   mpack_tree_parse(&tree);
   const auto status = mpack_tree_error(&tree);
   if (status != mpack_ok) {
-    spdlog::error("MPack tree error: \"{}\", skipping Dictionary::update",
+    spdlog::error("MPack tree error: \"{}\", skipping Dictionary::deserialize",
                   mpack_error_to_string(status));
     return;
   }
-  update(mpack_tree_root(&tree));
+  deserialize_(mpack_tree_root(&tree));
   mpack_tree_destroy(&tree);
 }
 
-void Dictionary::update(mpack_node_t node) {
+void Dictionary::deserialize_(mpack_node_t node) {
   if (mpack_node_type(node) == mpack_type_nil) {
     return;
   }
@@ -85,7 +85,7 @@ void Dictionary::update(mpack_node_t node) {
       this->insert_at_key_(key, value_node);
     } else /* (it != map_.end()) */ {
       try {
-        it->second->update(value_node);
+        it->second->deserialize_(value_node);
       } catch (const TypeError &e) {
         throw TypeError(e, " ← at key \"" + key + "\"");
       }
@@ -174,7 +174,7 @@ void Dictionary::insert_at_key_(const std::string &key,
       break;
     }
     case mpack_type_map:
-      this->operator()(key).update(value);
+      this->operator()(key).deserialize_(value);
       break;
     case mpack_type_bin:
     case mpack_type_nil:
@@ -267,7 +267,7 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
         // For maps, use the update approach
         std::vector<char> child_buffer;
         size_t child_size = this_child.serialize(child_buffer);
-        result(key).update(child_buffer.data(), child_size);
+        result(key).deserialize(child_buffer.data(), child_size);
       }
     } else {
       // Key exists in other, recursively compute difference
@@ -291,7 +291,7 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
           // For maps, use the update approach
           std::vector<char> diff_buffer;
           size_t diff_size = child_diff.serialize(diff_buffer);
-          result(key).update(diff_buffer.data(), diff_size);
+          result(key).deserialize(diff_buffer.data(), diff_size);
         }
       }
     }
@@ -352,7 +352,7 @@ void Dictionary::read(const std::string &filename) {
   std::vector<char> buffer(size);
   input.read(buffer.data(), size);
   input.close();
-  this->update(buffer.data(), size);
+  deserialize(buffer.data(), size);
 }
 
 void Dictionary::write(const std::string &filename) const {
