@@ -544,6 +544,15 @@ class Dictionary {
    */
   const Dictionary &operator()(const std::string &key) const;
 
+  /*! Create a deep copy of an existing dictionary.
+   *
+   * @param[in] other Dictionary to copy.
+   * @return A new dictionary that is a deep copy of the input.
+   *
+   * @throw TypeError if deserialized data types cannot be handled.
+   */
+  static Dictionary deepcopy(const Dictionary &other);
+
   /*! Serialize to raw MessagePack data.
    *
    * @param[out] buffer Buffer that will hold the message data.

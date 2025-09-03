@@ -20,12 +20,14 @@
 #include <vector>
 
 #include "palimpsest/exceptions/KeyError.h"
+#include "palimpsest/exceptions/PalimpsestError.h"
 #include "palimpsest/exceptions/TypeError.h"
 #include "palimpsest/mpack/eigen.h"
 
 namespace palimpsest {
 
 using exceptions::KeyError;
+using exceptions::PalimpsestError;
 using exceptions::TypeError;
 using mpack::mpack_node_matrix3d;
 using mpack::mpack_node_quaterniond;
@@ -38,10 +40,12 @@ void Dictionary::clear() noexcept {
   map_.clear();
 }
 
-void Dictionary::update(const Dictionary &other) {
+Dictionary Dictionary::deepcopy(const Dictionary &other) {
+  Dictionary result;
   std::vector<char> buffer;
   size_t size = other.serialize(buffer);
-  deserialize(buffer.data(), size);
+  result.deserialize(buffer.data(), size);
+  return result;
 }
 
 void Dictionary::deserialize(const char *data, size_t size) {
@@ -264,7 +268,6 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
         }
         mpack_tree_destroy(&tree);
       } else {
-        // For maps, use the update approach
         std::vector<char> child_buffer;
         size_t child_size = this_child.serialize(child_buffer);
         result(key).deserialize(child_buffer.data(), child_size);
@@ -288,7 +291,6 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
           }
           mpack_tree_destroy(&tree);
         } else {
-          // For maps, use the update approach
           std::vector<char> diff_buffer;
           size_t diff_size = child_diff.serialize(diff_buffer);
           result(key).deserialize(diff_buffer.data(), diff_size);
@@ -420,6 +422,11 @@ std::ostream &operator<<(std::ostream &stream, const Dictionary &dict) {
     stream << "}";
   }
   return stream;
+}
+
+void Dictionary::update(const Dictionary &other) {
+  throw PalimpsestError(__FILE__, __LINE__,
+                        "Dictionary::update is not implemented yet");
 }
 
 }  // namespace palimpsest

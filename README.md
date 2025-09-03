@@ -67,7 +67,7 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 |---------------|---------------------------|
 | [`dict.clear`](https://docs.python.org/3/library/stdtypes.html#dict.clear) | [`Dictionary::clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
 | [`dict.copy`](https://docs.python.org/3/library/stdtypes.html#dict.copy) | Dictionaries are [move-only](#non-features) |
-| [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | not implemented yet ✖️  |
+| [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | `Dictionary::deepcopy` |
 | [`dict.fromkeys`](https://docs.python.org/3/library/stdtypes.html#dict.fromkeys) | not implemented yet ✖️  |
 | [`dict.get`](https://docs.python.org/3/library/stdtypes.html#dict.get) | [`Dictionary::get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
 | [`dict.items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | not implemented yet ✖️  |
