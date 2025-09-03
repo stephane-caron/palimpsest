@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
+// Copyright 2025 Inria
 
 #include <gtest/gtest.h>
 #include <palimpsest/Dictionary.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <string>
 #include <vector>
 
 namespace palimpsest {
