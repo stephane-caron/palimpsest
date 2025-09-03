@@ -444,8 +444,8 @@ class Dictionary {
    * @return Value that was stored at the key.
    *
    * @throw KeyError if there is no object at this key.
-   * @throw TypeError if there is an object at this key but it is not a value, or
-   *     it is but its type does not match T.
+   * @throw TypeError if there is an object at this key but it is not a value,
+   *     or it is but its type does not match T.
    *
    * @note This function has the same semantics as Python's dict.pop(key).
    */
@@ -462,12 +462,13 @@ class Dictionary {
    * @param[in] key Key to remove.
    * @param[in] default_value Default value to return if key doesn't exist.
    * @return Value that was stored at the key, or default_value if key doesn't
-   * exist.
+   *     exist.
    *
-   * @throw TypeError if there is an object at this key but it is not a value, or
-   *     it is but its type does not match T.
+   * @throw TypeError if there is an object at this key but it is not a value,
+   *     or it is but its type does not match T.
    *
-   * @note This function has the same semantics as Python's dict.pop(key, default).
+   * @note This function has the same semantics as Python's dict.pop(key,
+   * default).
    */
   template <typename T>
   T pop(const std::string &key, const T &default_value) {

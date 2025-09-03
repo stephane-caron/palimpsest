@@ -13,6 +13,14 @@
 
 using palimpsest::Dictionary;
 
+inline void print_title(const std::string& title) {
+  static std::string title_sep =
+      "--------------------------------------------------";
+  std::cout << std::endl
+            << title_sep << " " << title << " " << title_sep << std::endl
+            << std::endl;
+}
+
 int main() {
   Dictionary dict;
 
@@ -41,6 +49,7 @@ int main() {
   std::cout << "]\n";
 
   // dict.get(key, default) - Get value with default fallback
+  print_title("dict.get");
   std::string name = dict.get<std::string>("name", "unknown");
   std::string missing = dict.get<std::string>("missing", "default_value");
   double timeout = dict.get<double>("nonexistent", 10.0);
@@ -50,7 +59,8 @@ int main() {
             << "'\n";
   std::cout << ">>> dict.get('nonexistent', 10.0)\n" << timeout << "\n";
 
-  // dict.update() - Update with another dictionary
+  // dict.update(other) - Update with another dictionary
+  print_title("dict.update");
   Dictionary updates;
   updates("temperature") = 28.0;  // Update existing
   updates("humidity") = 65.0;     // Add new
@@ -72,6 +82,7 @@ int main() {
   std::cout << "]\n";
 
   // dict.clear() - Clear all contents
+  print_title("dict.clear");
   Dictionary temp_dict;
   temp_dict("a") = 1;
   temp_dict("b") = 2;
