@@ -52,15 +52,3 @@ Dictionary diff = config1.difference(config2);
 ```
 
 The difference function preserves the nested structure of dictionaries.
-
-## Adding custom types
-
-Adding a new custom type boils down to the following steps:
-
-* Add implicit type conversions to `Dictionary.h`
-* Add a read function specialization to `mpack/read.h`
-* Add a write function specialization to `mpack/Writer.h`
-* Add a write function specialization to `mpack/write.h`
-* Add a write function specialization to `json/write.h`
-
-Take a look at the existing types in these files and in unit tests for inspiration.
