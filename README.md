@@ -65,18 +65,18 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 
 | Python `dict` | Palimpsest `Dictionary` |
 |---------------|---------------------------|
-| [`clear`](https://docs.python.org/3/library/stdtypes.html#dict.clear) | [`clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
-| [`copy`](https://docs.python.org/3/library/stdtypes.html#dict.copy) | Shallow copies are not allowed |
+| [`dict.clear`](https://docs.python.org/3/library/stdtypes.html#dict.clear) | [`Dictionary::clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
+| [`dict.copy`](https://docs.python.org/3/library/stdtypes.html#dict.copy) | Shallow copies are not allowed |
 | [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | not implemented yet ✖️  |
-| [`fromkeys`](https://docs.python.org/3/library/stdtypes.html#dict.fromkeys) | not implemented yet ✖️  |
-| [`get`](https://docs.python.org/3/library/stdtypes.html#dict.get) | [`get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
-| [`items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | not implemented yet ✖️  |
-| [`keys`](https://docs.python.org/3/library/stdtypes.html#dict.keys) | [`keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
-| [`pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | not implemented yet ✖️  |
-| [`popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | not implemented yet ✖️  |
-| [`setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | not implemented yet ✖️  |
-| [`update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
-| [`values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
+| [`dict.fromkeys`](https://docs.python.org/3/library/stdtypes.html#dict.fromkeys) | not implemented yet ✖️  |
+| [`dict.get`](https://docs.python.org/3/library/stdtypes.html#dict.get) | [`Dictionary::get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
+| [`dict.items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | not implemented yet ✖️  |
+| [`dict.keys`](https://docs.python.org/3/library/stdtypes.html#dict.keys) | [`Dictionary::keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
+| [`dict.pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | not implemented yet ✖️  |
+| [`dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | not implemented yet ✖️  |
+| [`dict.setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | not implemented yet ✖️  |
+| [`dict.update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`Dictionary::update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
+| [`dict.values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
 
 Implementing one of the missing functions is a great way to [contribute](CONTRIBUTING.md) to this project.
 
