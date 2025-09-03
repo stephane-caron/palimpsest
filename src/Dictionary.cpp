@@ -12,6 +12,7 @@
 
 #include "palimpsest/Dictionary.h"
 
+#include <cstring>
 #include <fstream>
 #include <memory>
 #include <string>
@@ -34,6 +35,12 @@ using mpack::mpack_node_vectorXd;
 void Dictionary::clear() noexcept {
   assert(this->is_map());
   map_.clear();
+}
+
+void Dictionary::update(const Dictionary &other) {
+  std::vector<char> buffer;
+  size_t size = other.serialize(buffer);
+  update(buffer.data(), size);
 }
 
 void Dictionary::update(const char *data, size_t size) {
@@ -83,12 +90,6 @@ void Dictionary::update(mpack_node_t node) {
       }
     }
   }
-}
-
-void Dictionary::update(const Dictionary &other) {
-  std::vector<char> buffer;
-  size_t size = other.serialize(buffer);
-  update(buffer.data(), size);
 }
 
 void Dictionary::insert_at_key_(const std::string &key,
