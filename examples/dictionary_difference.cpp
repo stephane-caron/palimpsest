@@ -2,8 +2,6 @@
 
 #include <palimpsest/Dictionary.h>
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
 #include <iostream>
 
 using palimpsest::Dictionary;
