@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+// Copyright 2025 Inria
 
 #include <palimpsest/Dictionary.h>
 
@@ -9,6 +10,8 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <string>
+#include <vector>
 
 using palimpsest::Dictionary;
 
