@@ -101,7 +101,25 @@ int main() {
   }
   std::cout << "]\n";
 
-  std::cout << ">>> dict\n" << dict << std::endl;
+  // dict.pop(key) - Remove and return value (like Python dict.pop)
+  print_title("dict.pop");
+  std::cout << ">>> dict\n" << dict << "\n";
+  std::cout << ">>> dict.pop<double>('humidity')\n";
+  double humidity = dict.pop<double>("humidity");
+  std::cout << humidity << "\n";
+  std::cout << ">>> dict\n" << dict << "\n";
+
+  // dict.pop(key, default) - Remove and return value, or default if missing
+  std::cout << ">>> dict.pop<std::string>('missing_key', 'not_found')\n";
+  std::string missing_result =
+      dict.pop<std::string>("missing_key", "not_found");
+  std::cout << "'" << missing_result << "'\n";
+
+  std::cout << ">>> dict\n" << dict << "\n";
+  std::cout << ">>> dict.pop<std::string>('location')\n";
+  std::string location = dict.pop<std::string>("location");
+  std::cout << "'" << location << "'\n";
+  std::cout << ">>> dict\n" << dict << "\n";
 
   return EXIT_SUCCESS;
 }
