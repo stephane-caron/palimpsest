@@ -36,3 +36,20 @@ target_link_libraries(DictionaryTest PUBLIC
 )
 
 gtest_discover_tests(DictionaryTest)
+
+add_executable(DifferenceTest DictionaryDifference.cpp)
+
+target_include_directories(DifferenceTest PUBLIC
+    ../third_party/cppcodec
+)
+
+target_link_libraries(DifferenceTest PUBLIC
+    Eigen3::Eigen
+    Threads::Threads
+    gtest
+    gtest_main
+    mpack
+    palimpsest
+)
+
+gtest_discover_tests(DifferenceTest)
