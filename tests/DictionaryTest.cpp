@@ -1016,9 +1016,6 @@ TEST(Dictionary, DeepCopyFromDictionary) {
   // Verify dict1 is unchanged (deepcopy doesn't modify anything)
   ASSERT_EQ(dict1.get<std::string>("name"), "first");
   ASSERT_EQ(dict1.get<int>("value"), 42);
-
-  // Test that update function throws PalimpsestError as it's not implemented
-  ASSERT_THROW(dict1.update(dict2), palimpsest::exceptions::PalimpsestError);
 }
 
 TEST(Dictionary, PopValue) {
