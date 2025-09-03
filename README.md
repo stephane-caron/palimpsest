@@ -6,7 +6,7 @@
 ![C++ version](https://img.shields.io/badge/C++-17/20-blue.svg?style=flat)
 [![Release](https://img.shields.io/github/v/release/stephane-caron/palimpsest.svg?sort=semver)](https://github.com/stephane-caron/palimpsest/releases)
 
-_palimpsest_ implements a `Dictionary` type for C++ meant for fast value updates and serialization. It is called [palimpsest](https://en.wiktionary.org/wiki/palimpsest#Noun) because dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
+The Palimpsest library implements a `Dictionary` type for C++ meant for fast value updates and serialization. It is called [palimpsest](https://en.wiktionary.org/wiki/palimpsest#Noun) because dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
 
 ## Example
 
@@ -61,21 +61,22 @@ Dictionaries can also be serialized to bytes for transmission over TCP, memory-m
 
 ## Link with Python dictionaries
 
-_palimpsest_ will feel familiar if you are used to Python dictionaries, as its API is a subset of Python's `dict`:
+Palimpsest will feel familiar if you are used to Python dictionaries, as its API is a subset of Python's `dict`:
 
-| Python `dict` | _palimpsest_ `Dictionary` |
+| Python `dict` | Palimpsest `Dictionary` |
 |---------------|---------------------------|
-| `clear`       | [`clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
-| `copy`        | ✖️  |
-| `fromkeys`    | ✖️  |
-| `get`         | [`get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
-| `items`       | ✖️  |
-| `keys`        | [`keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
-| `pop`         | ✖️  |
-| `popitem`     | ✖️  |
-| `setdefault`  | ✖️  |
-| `update`      | [`update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
-| `values`      | ✖️  |
+| [`clear`](https://docs.python.org/3/library/stdtypes.html#dict.clear) | [`clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
+| [`copy`](https://docs.python.org/3/library/stdtypes.html#dict.copy) | Shallow copies are not allowed |
+| [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | not implemented yet ✖️  |
+| `fromkeys`    | not implemented yet ✖️  |
+| [`get`](https://docs.python.org/3/library/stdtypes.html#dict.get) | [`get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
+| [`items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | not implemented yet ✖️  |
+| [`keys`](https://docs.python.org/3/library/stdtypes.html#dict.keys) | [`keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
+| [`pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | not implemented yet ✖️  |
+| [`popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | not implemented yet ✖️  |
+| [`setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | not implemented yet ✖️  |
+| [`update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
+| [`values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
 
 Implementing one of the missing functions is a great way to [contribute](CONTRIBUTING.md) to this project.
 
@@ -83,7 +84,7 @@ Implementing one of the missing functions is a great way to [contribute](CONTRIB
 
 All design decisions have their pros and cons. Take a look at the features and non-features below to decide if it is also a fit for _your_ use case.
 
-The two main assumptions in _palimpsest_ dictionaries are that:
+The two main assumptions in Palimpsest dictionaries are that:
 
 * **Keys** are strings.
 * **Values** hold either a sub-dictionary or a type that can be unambiguously serialized.
@@ -101,10 +102,10 @@ The two main assumptions in _palimpsest_ dictionaries are that:
 ### Non-features
 
 * Prioritizes speed over user-friendliness
+* Dictionaries are move-only (no copy constructor)
 * Array values are mostly limited to Eigen tensors (matrix, quaternion, vector)
-* No copy constructor (but a move constructor)
-* Custom types need to deserialize unambiguously
 * Shallow and deep copies are not implemented ([PRs welcome](CONTRIBUTING.md))
+* Types need to deserialize unambiguously (positive integers always deserialize to `unsigned`)
 
 Check out the existing [alternatives](https://github.com/stephane-caron/palimpsest#alternatives) if any of these choices is a no-go for you.
 
