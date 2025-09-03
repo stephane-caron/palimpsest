@@ -506,6 +506,15 @@ class Dictionary {
    */
   void read(const std::string &filename);
 
+  /*! Update dictionary from another dictionary.
+   *
+   * @param[in] other Dictionary to update from.
+   *
+   * @throw TypeError if deserialized data types don't match those of the
+   *     corresponding objects in the dictionary.
+   */
+  void update(const Dictionary &other);
+
   /*! Update dictionary from raw MessagePack data.
    *
    * @param[in] data Buffer to read MessagePack from.
@@ -525,14 +534,19 @@ class Dictionary {
    */
   void update(mpack_node_t node);
 
-  /*! Update dictionary from another dictionary.
+  /*! Compute the difference between this dictionary and another.
    *
-   * @param[in] other Dictionary to update from.
+   * @param[in] other Dictionary to compare with.
+   * @return A new dictionary containing key-value pairs that are in this
+   *     dictionary and either not in other, or in other but with different
+   *     values.
    *
-   * @throw TypeError if deserialized data types don't match those of the
-   *     corresponding objects in the dictionary.
+   * The returned dictionary maintains the nested structure of differences. For
+   * nested dictionaries, only the differing sub-keys are included in the
+   * result. Values are compared by serializing both objects and comparing the
+   * serialized data.
    */
-  void update(const Dictionary &other);
+  Dictionary difference(const Dictionary &other) const;
 
   //! Allow implicit conversion to (bool &).
   operator bool &() { return this->as<bool>(); }
