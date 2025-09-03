@@ -45,10 +45,7 @@ jobs:
 
     lint:
         name: "Lint"
-        # This job is pinned to Ubuntu 22.04 because the following error starts
-        # to happen with a more recent OS: "AttributeError: module 'cpplint'
-        # has no attribute '_ERROR_CATEGORIES'"
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-latest
         steps:
             - name: "Checkout sources"
               uses: actions/checkout@v4
