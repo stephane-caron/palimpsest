@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Add an `update` override to update from another dictionary
+- Add `difference` function for dictionary difference
+- Add `update` override to update from another dictionary
 - docs: Add Developer notes page
 - docs: Add Usage page
 - examples: Add delta compression example
