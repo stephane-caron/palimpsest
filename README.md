@@ -59,7 +59,7 @@ std::cout << world_bis << std::endl;
 
 Dictionaries can also be serialized to bytes for transmission over TCP, memory-mapped files, telegraph lines, etc. Code in the [examples](https://github.com/stephane-caron/palimpsest/tree/main/examples) directory shows how to save and load dictionaries to and from C++ and Python.
 
-## Link with Python dictionaries
+## Comparison to Python dictionaries
 
 Palimpsest will feel familiar if you are used to Python dictionaries, as its API is a subset of Python's `dict`:
 
