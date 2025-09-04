@@ -57,7 +57,7 @@ world_bis.read("world.mpack");
 std::cout << world_bis << std::endl;
 ```
 
-Dictionaries can also be serialized to bytes for transmission over TCP, memory-mapped files, telegraph lines, etc. Code in the [examples](https://github.com/stephane-caron/palimpsest/tree/main/examples) directory shows how to save and load dictionaries to and from C++ and Python.
+Dictionaries can also be serialized to bytes for transmission over TCP, memory-mapped files, telegraph lines, etc. Check out the [examples](https://github.com/stephane-caron/palimpsest/tree/main/examples) directory for more advanced use cases.
 
 ## Comparison to Python dictionaries
 
@@ -107,7 +107,7 @@ The two main assumptions in palimpsest dictionaries are that:
 * Shallow and deep copies are not implemented ([PRs welcome](CONTRIBUTING.md))
 * Types need to deserialize unambiguously (positive integers always deserialize to `unsigned`)
 
-Check out the existing [alternatives](https://github.com/stephane-caron/palimpsest#alternatives) if any of these choices is a no-go for you.
+Check out the [alternatives](https://github.com/stephane-caron/palimpsest#see-also) below if any of these design decisions doesn't match your requirements.
 
 ## Installation
 
@@ -144,16 +144,14 @@ make install
 
 Note that by default [MPack](https://github.com/ludocode/mpack) will be built and installed from the [``third_party``](https://github.com/stephane-caron/palimpsest/tree/main/third_party) folder. Set `-DBUILD_MPACK=OFF` if you already have MPack 1.1 or later installed on your system.
 
-## Going further
-
-Further usage examples including serialization, deserialization, and adding custom types, are provided in the [documentation](https://stephane-caron.github.io/palimpsest/).
-
 ## See also
 
+The `Dictionary` class in palimpsest derives from two classes of the [mc\_rtc](https://github.com/jrl-umi3218/mc_rtc/) robotics framework: `mc_rtc::Configuration` (similar API, based on RapidJSON) and `mc_rtc::DataStore` (general value types, but not serializable).
+
+If some of the design decisions in palimpsest don't match your requirements, you can also check out the following alternatives:
+
 * [JSON for Modern C++](https://github.com/nlohmann/json): most user-friendly library of this list, serializes to MessagePack and other binary formats, but not designed for speed.
-* [`mc_rtc::Configuration`](https://github.com/jrl-umi3218/mc_rtc/blob/master/include/mc_rtc/Configuration.h) - similar API to palimpsest, based on RapidJSON (see below).
-* [`mc_rtc::DataStore`](https://github.com/jrl-umi3218/mc_rtc/blob/master/include/mc_rtc/DataStore.h) - can hold more general value types, like lambda functions, but does not serialize.
-* [`mjlib::telemetry`](https://github.com/mjbots/mjlib/tree/master/mjlib/telemetry) - if your use case is more specifically telemetry in robotics or embedded systems.
+* [mjlib](https://github.com/mjbots/mjlib): includes a `telemetry` library if your use case is more specifically in robotics or embedded systems.
 * [Protocol Buffers](https://developers.google.com/protocol-buffers/): good fit if you have a fixed schema (keys don't change at all) that you want to serialize to and from.
 * [RapidJSON](https://github.com/Tencent/rapidjson/): low memory footprint, can serialize to MessagePack using other [related projects](https://github.com/Tencent/rapidjson/wiki/Related-Projects), but has linear lookup complexity as it stores dictionaries [as lists of key-value pairs](https://github.com/Tencent/rapidjson/issues/102).
 * [simdjson](https://github.com/simdjson/simdjson/): uses SIMD instructions and microparallel algorithms to parse JSON (reportedly 4x faster than RapidJSON and 25x faster than JSON for Modern C++).
