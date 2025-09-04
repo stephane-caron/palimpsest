@@ -16,7 +16,7 @@
 using palimpsest::Dictionary;
 
 // Number of steps of the evaluation loop
-constexpr int kNumSteps = 100000;
+constexpr int kNumSteps = 10000;
 
 // Make a big dictionary representative of a robotics use case
 Dictionary make_big_robot_dictionary();
@@ -39,6 +39,10 @@ int main() {
   // Temporary files for comparison
   const std::string full_dict_file = "/tmp/full_dictionary.mpack";
   const std::string delta_dict_file = "/tmp/delta_dictionary.mpack";
+
+  // Open streams to output temporary files
+  std::ofstream full_output(full_dict_file, std::ofstream::binary);
+  std::ofstream delta_output(delta_dict_file, std::ofstream::binary);
 
   // Timing variables
   auto full_time_total = std::chrono::microseconds::zero();
@@ -64,17 +68,21 @@ int main() {
       servo_observation("velocity") = vel_dis(gen);
     }
 
-    // Write full dictionary
+    // Serialize and write full dictionary
     auto start_full = std::chrono::high_resolution_clock::now();
-    robot.write(full_dict_file);
+    std::vector<char> full_buffer;
+    size_t full_size = robot.serialize(full_buffer);
+    full_output.write(full_buffer.data(), static_cast<int>(full_size));
     auto end_full = std::chrono::high_resolution_clock::now();
     full_time_total += std::chrono::duration_cast<std::chrono::microseconds>(
         end_full - start_full);
 
-    // Compute and write difference dictionary
+    // Compute difference and serialize to delta stream
     auto start_delta = std::chrono::high_resolution_clock::now();
     Dictionary delta = robot.difference(init_robot);
-    delta.write(delta_dict_file);
+    std::vector<char> delta_buffer;
+    size_t delta_size = delta.serialize(delta_buffer);
+    delta_output.write(delta_buffer.data(), static_cast<int>(delta_size));
     auto end_delta = std::chrono::high_resolution_clock::now();
     delta_time_total += std::chrono::duration_cast<std::chrono::microseconds>(
         end_delta - start_delta);
@@ -84,17 +92,23 @@ int main() {
     }
   }
 
+  // Close output streams
+  full_output.close();
+  delta_output.close();
+
   // Compare memory usage
-  std::uintmax_t full_size = std::filesystem::file_size(full_dict_file);
-  std::uintmax_t delta_size = std::filesystem::file_size(delta_dict_file);
+  std::uintmax_t full_file_size = std::filesystem::file_size(full_dict_file);
+  std::uintmax_t delta_file_size = std::filesystem::file_size(delta_dict_file);
 
   std::cout << "\n=== Memory performance ===\n";
-  std::cout << "Full dictionary file size: " << full_size << " bytes\n";
-  std::cout << "Delta dictionary file size: " << delta_size << " bytes\n";
-  std::cout << "Compression ratio: " << (100.0 * delta_size / full_size)
-            << "%\n";
-  std::cout << "Space saved: " << (full_size - delta_size) << " bytes ("
-            << (100.0 * (full_size - delta_size) / full_size) << "%)\n";
+  std::cout << "Full dictionary file size: " << full_file_size << " bytes\n";
+  std::cout << "Delta dictionary file size: " << delta_file_size << " bytes\n";
+  std::cout << "Compression ratio: "
+            << (double(full_file_size) / delta_file_size) << "\n";
+  std::cout << "Space saved: " << (full_file_size - delta_file_size)
+            << " bytes ("
+            << (100.0 * (full_file_size - delta_file_size) / full_file_size)
+            << "%)\n";
 
   // Compare times
   std::cout << "\n=== Time performance  ===\n";
