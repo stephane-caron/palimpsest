@@ -13,6 +13,17 @@
 
 using palimpsest::Dictionary;
 
+inline void print_dict_keys(const Dictionary& dict) {
+  std::cout << "[";
+  bool first = true;
+  for (const auto& key : dict.keys()) {
+    if (!first) std::cout << ", ";
+    std::cout << "'" << key << "'";
+    first = false;
+  }
+  std::cout << "]";
+}
+
 inline void print_title(const std::string& title) {
   static std::string title_sep =
       "--------------------------------------------------";
@@ -39,47 +50,40 @@ int main() {
   std::cout << ">>> dict\n" << dict << "\n";
 
   // dict.keys() - Get all keys at the top level
-  std::cout << ">>> dict.keys()\n[";
-  bool first = true;
-  for (const auto& key : dict.keys()) {
-    if (!first) std::cout << ", ";
-    std::cout << "'" << key << "'";
-    first = false;
-  }
-  std::cout << "]\n";
+  std::cout << ">>> dict.keys()\n";
+  print_dict_keys(dict);
+  std::cout << std::endl;
+  std::cout << ">>> dict['config'].keys()\n";
+  print_dict_keys(dict("config"));
+  std::cout << std::endl;
 
   // dict.get(key, default) - Get value with default fallback
   print_title("dict.get");
   std::string name = dict.get<std::string>("name", "unknown");
   std::string missing = dict.get<std::string>("missing", "default_value");
-  double timeout = dict.get<double>("nonexistent", 10.0);
+  double timeout = dict.get<double>("nonexistent", 10.1);
 
   std::cout << ">>> dict.get('name', 'unknown')\n'" << name << "'\n";
   std::cout << ">>> dict.get('missing', 'default_value')\n'" << missing
             << "'\n";
-  std::cout << ">>> dict.get('nonexistent', 10.0)\n" << timeout << "\n";
+  std::cout << ">>> dict.get('nonexistent', 10.1)\n" << timeout << "\n";
 
   // dict.update(other) - Update with another dictionary
   print_title("dict.update");
   Dictionary updates;
-  updates("temperature") = 28.0;  // Update existing
-  updates("humidity") = 65.0;     // Add new
+  updates("temperature") = 28.2;  // Update existing
+  updates("humidity") = 65.3;     // Add new
   updates("location") = "Paris";  // Add new
 
-  std::cout << ">>> updates\n" << updates << "\n";
+  std::cout << ">>> dict.keys()\n";
+  print_dict_keys(dict);
+  std::cout << std::endl;
+  std::cout << ">>> updates = " << updates << "\n";
   std::cout << ">>> dict.update(updates)\n";
   dict.update(updates);
-  std::cout << ">>> dict\n" << dict << "\n";
-
-  // Accessing nested dictionary keys
-  std::cout << ">>> dict['config'].keys()\n[";
-  first = true;
-  for (const auto& key : dict("config").keys()) {
-    if (!first) std::cout << ", ";
-    std::cout << "'" << key << "'";
-    first = false;
-  }
-  std::cout << "]\n";
+  std::cout << ">>> dict.keys()\n";
+  print_dict_keys(dict);
+  std::cout << std::endl;
 
   // dict.clear() - Clear all contents
   print_title("dict.clear");
@@ -90,16 +94,9 @@ int main() {
   std::cout << ">>> temp_dict.clear()\n";
   temp_dict.clear();
   std::cout << ">>> temp_dict\n" << temp_dict << "\n";
-
-  // Demonstrate that cleared dictionary has no keys
-  std::cout << ">>> temp_dict.keys()\n[";
-  first = true;
-  for (const auto& key : temp_dict.keys()) {
-    if (!first) std::cout << ", ";
-    std::cout << "'" << key << "'";
-    first = false;
-  }
-  std::cout << "]\n";
+  std::cout << ">>> temp_dict.keys()\n";
+  print_dict_keys(temp_dict);
+  std::cout << "\n";
 
   // dict.pop(key) - Remove and return value (like Python dict.pop)
   print_title("dict.pop");
