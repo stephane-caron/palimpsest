@@ -12,9 +12,10 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- **Breaking:** don't expose internal MPack nodes in palimpsest API
+- **Breaking:** Move `Dictionary::Value` to `palimpsest::Value`
 - **Breaking:** Rename `Dictionary::update(data, size)` to `deserialize`
 - **Breaking:** Rename `Dictionary::update(mpack_node_t)` to private `deserialize_`
+- **Breaking:** don't expose internal MPack nodes in palimpsest API
 
 ## [2.4.0] - 2025-09-03
 

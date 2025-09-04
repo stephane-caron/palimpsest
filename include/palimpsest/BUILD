@@ -8,6 +8,7 @@ cc_library(
     name = "dictionary",
     hdrs = [
         "Dictionary.h",
+        "Value.h",
     ],
     include_prefix = "palimpsest",
     deps = [

@@ -389,8 +389,7 @@ void Dictionary::serialize_(mpack::Writer &writer) const {
   writer.finish_map();
 }
 
-const Dictionary::Value &Dictionary::get_child_value_(
-    const std::string &key) const {
+const Value &Dictionary::get_child_value_(const std::string &key) const {
   const auto it = map_.find(key);
   if (it == map_.end()) {
     throw KeyError(key, __FILE__, __LINE__, "");
