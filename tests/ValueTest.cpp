@@ -5,6 +5,7 @@
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -488,6 +489,157 @@ TEST_F(ValueTest, CopyAssignment) {
   original.get_reference<int>() = 100;
   EXPECT_EQ(original.get_reference<int>(), 100);
   EXPECT_EQ(copy.get_reference<int>(), 42);
+}
+
+TEST_F(ValueTest, CopyComplexTypes) {
+  // Test copying with std::vector
+  Value original;
+  original.allocate<std::vector<double>>();
+  new (original.buffer.get()) std::vector<double>{1.0, 2.0, 3.0};
+  original.setup<std::vector<double>>();
+
+  Value copy(original);
+
+  const auto& orig_vec = original.get_reference<std::vector<double>>();
+  const auto& copy_vec = copy.get_reference<std::vector<double>>();
+
+  // Verify deep copy
+  EXPECT_EQ(orig_vec.size(), copy_vec.size());
+  for (size_t i = 0; i < orig_vec.size(); ++i) {
+    EXPECT_DOUBLE_EQ(orig_vec[i], copy_vec[i]);
+  }
+
+  // Modify original and verify copy is unchanged
+  auto& mutable_orig = original.get_reference<std::vector<double>>();
+  mutable_orig.push_back(4.0);
+
+  EXPECT_EQ(original.get_reference<std::vector<double>>().size(), 4);
+  EXPECT_EQ(copy.get_reference<std::vector<double>>().size(), 3);
+}
+
+TEST_F(ValueTest, CopyCustomStruct) {
+  // Test copying with custom struct
+  Value original;
+  original.allocate<TestStruct>();
+  new (original.buffer.get()) TestStruct{42, 3.14, "test"};
+  original.setup<TestStruct>();
+
+  Value copy = original;
+
+  const auto& orig_struct = original.get_reference<TestStruct>();
+  const auto& copy_struct = copy.get_reference<TestStruct>();
+
+  // Verify deep copy
+  EXPECT_EQ(orig_struct.x, copy_struct.x);
+  EXPECT_EQ(orig_struct.y, copy_struct.y);
+  EXPECT_EQ(orig_struct.z, copy_struct.z);
+
+  // Modify original and verify copy is unchanged
+  auto& mutable_orig = original.get_reference<TestStruct>();
+  mutable_orig.x = 999;
+  mutable_orig.z = "modified";
+
+  EXPECT_EQ(original.get_reference<TestStruct>().x, 999);
+  EXPECT_EQ(original.get_reference<TestStruct>().z, "modified");
+  EXPECT_EQ(copy.get_reference<TestStruct>().x, 42);
+  EXPECT_EQ(copy.get_reference<TestStruct>().z, "test");
+}
+
+TEST_F(ValueTest, CopyEmptyValue) {
+  // Test copying empty Value
+  Value empty;
+  Value copy(empty);
+
+  EXPECT_EQ(empty.buffer, nullptr);
+  EXPECT_EQ(copy.buffer, nullptr);
+
+  // Test copy assignment with empty value
+  Value another_copy;
+  another_copy = empty;
+  EXPECT_EQ(another_copy.buffer, nullptr);
+}
+
+TEST_F(ValueTest, SelfAssignment) {
+  // Test self-assignment safety
+  Value value;
+  value.allocate<int>();
+  new (value.buffer.get()) int{42};
+  value.setup<int>();
+
+  value = value;  // Self-assignment
+
+  EXPECT_NE(value.buffer, nullptr);
+  EXPECT_EQ(value.get_reference<int>(), 42);
+}
+
+TEST_F(ValueTest, MoveActuallyMoves) {
+  // Test that moves actually move (not copy) by checking buffer pointers
+  Value original;
+  original.allocate<int>();
+  new (original.buffer.get()) int{42};
+  original.setup<int>();
+
+  uint8_t* original_buffer_ptr = original.buffer.get();
+  Value moved(std::move(original));
+
+  // Verify it was actually moved, not copied
+  EXPECT_EQ(original.buffer, nullptr);  // Original should be empty
+  EXPECT_EQ(moved.buffer.get(), original_buffer_ptr);  // Same buffer
+  EXPECT_EQ(moved.get_reference<int>(), 42);
+
+  // Test move assignment
+  Value original2;
+  original2.allocate<int>();
+  new (original2.buffer.get()) int{100};
+  original2.setup<int>();
+
+  uint8_t* original2_buffer_ptr = original2.buffer.get();
+  Value moved2;
+  moved2 = std::move(original2);
+
+  // Verify it was actually moved, not copied
+  EXPECT_EQ(original2.buffer, nullptr);  // Original should be empty
+  EXPECT_EQ(moved2.buffer.get(), original2_buffer_ptr);  // Same buffer
+  EXPECT_EQ(moved2.get_reference<int>(), 100);
+}
+
+TEST_F(ValueTest, CopyPreservesTypeInformation) {
+  // Test that type_name and same functions work correctly after copying
+  Value original;
+  original.allocate<std::string>();
+  new (original.buffer.get()) std::string("hello");
+  original.setup<std::string>();
+
+  Value copy(original);
+
+  // Both should have the same type information
+  EXPECT_NE(original.type_name, nullptr);
+  EXPECT_NE(copy.type_name, nullptr);
+  EXPECT_EQ(original.type_name(), copy.type_name());  // Same type name string
+
+  // Both should have working same() function
+  const std::type_info& string_type = typeid(std::string);
+  const std::type_info& int_type = typeid(int);
+  EXPECT_TRUE(original.same(string_type.hash_code()));
+  EXPECT_TRUE(copy.same(string_type.hash_code()));
+  EXPECT_FALSE(original.same(int_type.hash_code()));
+  EXPECT_FALSE(copy.same(int_type.hash_code()));
+
+  // Both should allow correct type casting
+  EXPECT_NO_THROW(original.get_reference<std::string>());
+  EXPECT_NO_THROW(copy.get_reference<std::string>());
+  EXPECT_THROW(original.get_reference<int>(), TypeError);
+  EXPECT_THROW(copy.get_reference<int>(), TypeError);
+
+  // Values should be independent but type-compatible
+  EXPECT_EQ(original.get_reference<std::string>(), "hello");
+  EXPECT_EQ(copy.get_reference<std::string>(), "hello");
+
+  // Modify original and verify copy maintains correct type info
+  original.get_reference<std::string>() = "modified";
+  EXPECT_EQ(original.get_reference<std::string>(), "modified");
+  EXPECT_EQ(copy.get_reference<std::string>(), "hello");
+  EXPECT_TRUE(copy.same(typeid(std::string).hash_code()));
 }
 
 }  // namespace palimpsest
