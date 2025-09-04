@@ -29,8 +29,7 @@ TEST_F(DictionaryUpdateTest, UpdateEmptyWithValue) {
 
   dict.update(other);
   EXPECT_TRUE(dict.is_map());
-  // value might be deserialized as unsigned due to mpack type handling
-  EXPECT_EQ(dict.get<unsigned>("key"), 42u);
+  EXPECT_EQ(dict.get<int>("key"), 42);
 }
 
 TEST_F(DictionaryUpdateTest, UpdateValueWithEmpty) {
@@ -200,6 +199,24 @@ TEST_F(DictionaryUpdateTest, UpdateWithEigenTypes) {
             Eigen::Vector3d(1.0, 2.0, 3.0));
   EXPECT_EQ(dict.get<Eigen::Vector2d>("vector2d"), Eigen::Vector2d(4.0, 5.0));
   EXPECT_TRUE(dict("section").is_empty());
+}
+
+TEST_F(DictionaryUpdateTest, UpdateOverwriteValueWithMap) {
+  // This test implements the following Python behavior:
+  // >>> d = {"a": 12}; e = {"a": {}}; d.update(e); d
+  // {'a': {}}
+
+  Dictionary dict;
+  dict.insert<int>("a", 12);  // d = {"a": 12}
+
+  Dictionary other;
+  other("a") = Dictionary();  // e = {"a": {}}
+
+  dict.update(other);  // d.update(e)
+
+  EXPECT_TRUE(dict.is_map());
+  EXPECT_TRUE(dict("a").is_map());    // d["a"] should be {}
+  EXPECT_TRUE(dict("a").is_empty());  // d["a"] should be {}
 }
 
 }  // namespace palimpsest
