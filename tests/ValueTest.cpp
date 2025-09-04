@@ -439,4 +439,55 @@ TEST_F(ValueTest, ModifyStoredValue) {
   EXPECT_DOUBLE_EQ(const_vec[2], 3.0);
 }
 
+TEST_F(ValueTest, CopyConstruction) {
+  Value original;
+  original.allocate<int>();
+  new (original.buffer.get()) int{42};
+  original.setup<int>();
+
+  Value copy(original);
+
+  // Both should have valid buffers
+  EXPECT_NE(original.buffer, nullptr);
+  EXPECT_NE(copy.buffer, nullptr);
+
+  // Buffers should be different (deep copy)
+  EXPECT_NE(original.buffer.get(), copy.buffer.get());
+
+  // Values should be the same
+  EXPECT_EQ(original.get_reference<int>(), 42);
+  EXPECT_EQ(copy.get_reference<int>(), 42);
+
+  // Modify original and verify copy is unchanged
+  original.get_reference<int>() = 100;
+  EXPECT_EQ(original.get_reference<int>(), 100);
+  EXPECT_EQ(copy.get_reference<int>(), 42);
+}
+
+TEST_F(ValueTest, CopyAssignment) {
+  Value original;
+  original.allocate<int>();
+  new (original.buffer.get()) int{42};
+  original.setup<int>();
+
+  Value copy;
+  copy = original;
+
+  // Both should have valid buffers
+  EXPECT_NE(original.buffer, nullptr);
+  EXPECT_NE(copy.buffer, nullptr);
+
+  // Buffers should be different (deep copy)
+  EXPECT_NE(original.buffer.get(), copy.buffer.get());
+
+  // Values should be the same
+  EXPECT_EQ(original.get_reference<int>(), 42);
+  EXPECT_EQ(copy.get_reference<int>(), 42);
+
+  // Modify original and verify copy is unchanged
+  original.get_reference<int>() = 100;
+  EXPECT_EQ(original.get_reference<int>(), 100);
+  EXPECT_EQ(copy.get_reference<int>(), 42);
+}
+
 }  // namespace palimpsest
