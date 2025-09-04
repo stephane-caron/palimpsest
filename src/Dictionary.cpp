@@ -424,8 +424,99 @@ std::ostream &operator<<(std::ostream &stream, const Dictionary &dict) {
 }
 
 void Dictionary::update(const Dictionary &other) {
-  throw PalimpsestError(__FILE__, __LINE__,
-                        "Dictionary::update is not implemented yet");
+  // If other is empty, nothing to do
+  if (other.is_empty()) {
+    return;
+  }
+
+  // If other is a single value, replace this dictionary entirely
+  // We use a custom approach that avoids the deserialize functions
+  if (other.is_value()) {
+    // Serialize the other dictionary
+    std::vector<char> buffer;
+    size_t size = other.serialize(buffer);
+
+    // Parse the buffer and use insert_at_key_ to recreate the value
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, buffer.data(), size);
+    mpack_tree_parse(&tree);
+    const auto status = mpack_tree_error(&tree);
+    if (status == mpack_ok) {
+      // Clear this dictionary and insert the value at a temporary key
+      *this = Dictionary();
+      this->insert_at_key_("temp", mpack_tree_root(&tree));
+      // Move the value from temp key to replace this dictionary entirely
+      Dictionary temp_result = std::move((*this)("temp"));
+      *this = std::move(temp_result);
+    }
+    mpack_tree_destroy(&tree);
+    return;
+  }
+
+  // If this is currently a value, we need to convert it to a map
+  // to accommodate the incoming map structure
+  if (this->is_value()) {
+    *this = Dictionary();  // Clear and become empty map
+  }
+
+  // Now both are maps, perform recursive update
+  assert(this->is_map());
+  assert(other.is_map());
+
+  for (const auto &key_child : other.map_) {
+    const std::string &key = key_child.first;
+    const Dictionary &other_child = *key_child.second;
+
+    auto it = map_.find(key);
+    if (it == map_.end()) {
+      // Key doesn't exist in this dictionary
+      if (other_child.is_value()) {
+        // For values, use our custom copying approach
+        std::vector<char> buffer;
+        size_t size = other_child.serialize(buffer);
+
+        mpack_tree_t tree;
+        mpack_tree_init_data(&tree, buffer.data(), size);
+        mpack_tree_parse(&tree);
+        const auto status = mpack_tree_error(&tree);
+        if (status == mpack_ok) {
+          map_[key] = std::make_unique<Dictionary>();
+          map_[key]->insert_at_key_("temp", mpack_tree_root(&tree));
+          // Move the value from temp key to replace the dictionary
+          Dictionary temp_result = std::move((*map_[key])("temp"));
+          *map_[key] = std::move(temp_result);
+        }
+        mpack_tree_destroy(&tree);
+      } else {
+        // For maps, create and recursively update
+        map_[key] = std::make_unique<Dictionary>();
+        map_[key]->update(other_child);
+      }
+    } else {
+      // Key exists
+      if (other_child.is_value()) {
+        // Replace existing with the single value using custom copying
+        std::vector<char> buffer;
+        size_t size = other_child.serialize(buffer);
+
+        mpack_tree_t tree;
+        mpack_tree_init_data(&tree, buffer.data(), size);
+        mpack_tree_parse(&tree);
+        const auto status = mpack_tree_error(&tree);
+        if (status == mpack_ok) {
+          *it->second = Dictionary();
+          it->second->insert_at_key_("temp", mpack_tree_root(&tree));
+          // Move the value from temp key to replace the dictionary
+          Dictionary temp_result = std::move((*it->second)("temp"));
+          *it->second = std::move(temp_result);
+        }
+        mpack_tree_destroy(&tree);
+      } else {
+        // Recursively update map
+        it->second->update(other_child);
+      }
+    }
+  }
 }
 
 }  // namespace palimpsest
