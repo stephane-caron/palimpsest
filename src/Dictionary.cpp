@@ -199,48 +199,21 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
 
   // If this is a value
   if (this->is_value()) {
-    // If other is also a value, compare their serialized data
     if (other.is_value()) {
+      // Other is also a value, compare using serialization (for now)
       std::vector<char> this_buffer, other_buffer;
       size_t this_size = this->serialize(this_buffer);
       size_t other_size = other.serialize(other_buffer);
 
-      // If sizes differ or data differs, we need to return this value
+      // If values differ, return this value
       if (this_size != other_size ||
           std::memcmp(this_buffer.data(), other_buffer.data(), this_size) !=
               0) {
-        // Use a temporary key to insert this value, then extract it
-        std::vector<char> buffer;
-        size_t size = this->serialize(buffer);
-
-        mpack_tree_t tree;
-        mpack_tree_init_data(&tree, buffer.data(), size);
-        mpack_tree_parse(&tree);
-        if (mpack_tree_error(&tree) == mpack_ok) {
-          result.insert_at_key_("temp", mpack_tree_root(&tree));
-          // Move the value from temp key to result
-          Dictionary temp_result = std::move(result("temp"));
-          result.clear();
-          result = std::move(temp_result);
-        }
-        mpack_tree_destroy(&tree);
+        result.value_ = this->value_;
       }
     } else {
       // Other is not a value (empty or map), so this value is a difference
-      std::vector<char> buffer;
-      size_t size = this->serialize(buffer);
-
-      mpack_tree_t tree;
-      mpack_tree_init_data(&tree, buffer.data(), size);
-      mpack_tree_parse(&tree);
-      if (mpack_tree_error(&tree) == mpack_ok) {
-        result.insert_at_key_("temp", mpack_tree_root(&tree));
-        // Move the value from temp key to result
-        Dictionary temp_result = std::move(result("temp"));
-        result.clear();
-        result = std::move(temp_result);
-      }
-      mpack_tree_destroy(&tree);
+      result.value_ = this->value_;
     }
     return result;
   }
@@ -256,22 +229,7 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
     auto other_it = other.map_.find(key);
     if (other_it == other.map_.end()) {
       // Key doesn't exist in other, so include entire subtree as difference
-      if (this_child.is_value()) {
-        // For values, use insert_at_key_ to handle the serialized data properly
-        std::vector<char> child_buffer;
-        size_t child_size = this_child.serialize(child_buffer);
-        mpack_tree_t tree;
-        mpack_tree_init_data(&tree, child_buffer.data(), child_size);
-        mpack_tree_parse(&tree);
-        if (mpack_tree_error(&tree) == mpack_ok) {
-          result.insert_at_key_(key, mpack_tree_root(&tree));
-        }
-        mpack_tree_destroy(&tree);
-      } else {
-        std::vector<char> child_buffer;
-        size_t child_size = this_child.serialize(child_buffer);
-        result(key).deserialize(child_buffer.data(), child_size);
-      }
+      result(key).update(this_child);
     } else {
       // Key exists in other, recursively compute difference
       const Dictionary &other_child = *other_it->second;
@@ -279,22 +237,7 @@ Dictionary Dictionary::difference(const Dictionary &other) const {
 
       // Only include this key if there are actual differences
       if (!child_diff.is_empty()) {
-        if (child_diff.is_value()) {
-          // For values, use insert_at_key_
-          std::vector<char> diff_buffer;
-          size_t diff_size = child_diff.serialize(diff_buffer);
-          mpack_tree_t tree;
-          mpack_tree_init_data(&tree, diff_buffer.data(), diff_size);
-          mpack_tree_parse(&tree);
-          if (mpack_tree_error(&tree) == mpack_ok) {
-            result.insert_at_key_(key, mpack_tree_root(&tree));
-          }
-          mpack_tree_destroy(&tree);
-        } else {
-          std::vector<char> diff_buffer;
-          size_t diff_size = child_diff.serialize(diff_buffer);
-          result(key).deserialize(diff_buffer.data(), diff_size);
-        }
+        result(key) = std::move(child_diff);
       }
     }
   }
