@@ -40,11 +40,29 @@ class Value {
   //! Default constructor.
   Value() = default;
 
-  //! No copy constructor.
-  Value(const Value &) = delete;
+  //! Copy constructor.
+  Value(const Value &other) {
+    if (other.buffer) {
+      other.copy_(*this, other);
+    }
+  }
 
-  //! No copy assignment operator.
-  Value &operator=(const Value &) = delete;
+  //! Copy assignment operator.
+  Value &operator=(const Value &other) {
+    if (this != &other) {
+      // Clean up existing buffer if any
+      if (this->buffer) {
+        destroy_(*this);
+        this->buffer = nullptr;
+      }
+
+      // Copy from other if it has data
+      if (other.buffer) {
+        other.copy_(*this, other);
+      }
+    }
+    return *this;
+  }
 
   //! Default move constructor.
   Value(Value &&) = default;
@@ -95,6 +113,18 @@ class Value {
   T &setup() {
     this->type_name = &internal::type_name<T>;
     this->same = &internal::is_valid_hash<T, ArgsT...>;
+    copy_ = [](Value &dest, const Value &src) {
+      dest.allocate<T>();
+      dest.type_name = src.type_name;
+      dest.same = src.same;
+      dest.deserialize_ = src.deserialize_;
+      dest.destroy_ = src.destroy_;
+      dest.print_ = src.print_;
+      dest.serialize_ = src.serialize_;
+      dest.copy_ = src.copy_;
+      const T *src_obj = reinterpret_cast<const T *>(src.buffer.get());
+      new (dest.buffer.get()) T(*src_obj);
+    };
     deserialize_ = [](Value &self, mpack_node_t node) {
       T *cast_buffer = reinterpret_cast<T *>(self.buffer.get());
       mpack::read<T>(node, *cast_buffer);
@@ -144,6 +174,9 @@ class Value {
   bool (*same)(std::size_t);
 
  private:
+  //! Function that copies the value from another Value.
+  void (*copy_)(Value &, const Value &);
+
   //! Function that updates the value from a MessagePack node.
   void (*deserialize_)(Value &, mpack_node_t);
 

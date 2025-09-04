@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Add `deepcopy` function
 - Add `pop` function to remove a specific key and return its value
+- Add copy constructor to values
 - examples: Show how to use palimpsest dictionaries like Python ones
 
 ### Changed
