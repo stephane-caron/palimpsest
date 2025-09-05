@@ -267,6 +267,57 @@ class Dictionary {
     return ret;
   }
 
+  /*! If key is in the dictionary, return its value. If not, insert key with a
+   * value of default_value and return default_value.
+   *
+   * @param[in] key Key to look for or insert.
+   * @param[in] default_value Default value to insert and return if key doesn't
+   * exist.
+   * @return Reference to the value at key (either existing or newly inserted).
+   *
+   * @throw TypeError if the dictionary is not a map, or if there is already an
+   *     object at this key but it is not a value, or it is but its type does
+   *     not match T.
+   *
+   * @note This function has the same semantics as Python's dict.setdefault(key,
+   * default). It has the same semantics as @ref insert, except that it does
+   * not warn when returning an existing value.
+   */
+  template <typename T>
+  T &setdefault(const std::string &key, const T &default_value) {
+    if (this->is_value()) {
+      throw TypeError(__FILE__, __LINE__,
+                      "Cannot insert at key \"" + key +
+                          "\" in non-dictionary object of type \"" +
+                          value_.type_name() + "\".");
+    }
+    auto it = map_.find(key);
+    if (it != map_.end()) {
+      if (it->second->is_map()) {
+        throw TypeError(__FILE__, __LINE__,
+                        "Object at key \"" + key +
+                            "\" is a dictionary, cannot get a single value "
+                            "from it. Did you "
+                            "mean to use operator()?");
+      }
+      try {
+        return it->second->value_.get_reference<T>();
+      } catch (const TypeError &e) {
+        throw TypeError(
+            __FILE__, __LINE__,
+            "Object for key \"" + key +
+                "\" does not have the same type as the stored type. Stored " +
+                it->second->value_.type_name() + " but requested " +
+                typeid(T).name() + ".");
+      }
+    }
+    auto &child = this->operator()(key);
+    child.value_.allocate<T>();
+    new (child.value_.buffer.get()) T(default_value);
+    T &ret = child.value_.setup<T>();
+    return ret;
+  }
+
   /*! Assign value directly.
    *
    * @param[in] new_value New value to assign.
