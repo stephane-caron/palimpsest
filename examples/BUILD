@@ -24,6 +24,12 @@ py_binary(
 )
 
 cc_binary(
+    name = "python_like_usage",
+    srcs = ["python_like_usage.cpp"],
+    deps = ["@palimpsest"],
+)
+
+cc_binary(
     name = "save_dictionary",
     srcs = ["save_dictionary.cpp"],
     deps = ["@palimpsest"],
@@ -38,12 +44,6 @@ cc_binary(
 cc_binary(
     name = "simple_logger",
     srcs = ["simple_logger.cpp"],
-    deps = ["@palimpsest"],
-)
-
-cc_binary(
-    name = "use_like_python_dict",
-    srcs = ["use_like_python_dict.cpp"],
     deps = ["@palimpsest"],
 )
 
