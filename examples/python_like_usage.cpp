@@ -118,5 +118,17 @@ int main() {
   std::cout << "'" << location << "'\n";
   std::cout << ">>> dict\n" << dict << "\n";
 
+  // dict.setdefault(key, default) - Get value, or insert and return default
+  print_title("dict.setdefault");
+  std::cout << ">>> dict.setdefault('city', 'Tokyo')\n";
+  std::string& city = dict.setdefault<std::string>("city", "Tokyo");
+  std::cout << "'" << city << "'\n";
+  std::cout << ">>> dict['city']\n'" << dict.get<std::string>("city") << "'\n";
+
+  std::cout << ">>> dict.setdefault('city', 'London')\n";
+  std::string& existing_city = dict.setdefault<std::string>("city", "London");
+  std::cout << "'" << existing_city << "'\n";
+  std::cout << ">>> dict['city']\n'" << dict.get<std::string>("city") << "'\n";
+
   return EXIT_SUCCESS;
 }
