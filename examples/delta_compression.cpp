@@ -104,7 +104,7 @@ int main() {
   std::cout << "Full dictionary file size: " << full_file_size << " bytes\n";
   std::cout << "Delta dictionary file size: " << delta_file_size << " bytes\n";
   std::cout << "Compression ratio: "
-            << (double(full_file_size) / delta_file_size) << "\n";
+            << ((1.0 * full_file_size) / delta_file_size) << "\n";
   std::cout << "Space saved: " << (full_file_size - delta_file_size)
             << " bytes ("
             << (100.0 * (full_file_size - delta_file_size) / full_file_size)
