@@ -42,9 +42,7 @@ void Dictionary::clear() noexcept {
 
 Dictionary Dictionary::deepcopy(const Dictionary &other) {
   Dictionary result;
-  std::vector<char> buffer;
-  size_t size = other.serialize(buffer);
-  result.deserialize(buffer.data(), size);
+  result.update(other);
   return result;
 }
 
