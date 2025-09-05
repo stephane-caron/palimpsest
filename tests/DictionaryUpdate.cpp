@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+#include <string>
+
 #include "palimpsest/Dictionary.h"
 
 namespace palimpsest {
