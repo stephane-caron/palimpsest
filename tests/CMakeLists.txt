@@ -28,3 +28,18 @@ add_executable(DictionaryTest DictionaryTest.cpp)
 target_include_directories(DictionaryTest PUBLIC ../third_party/cppcodec)
 target_link_libraries(DictionaryTest PUBLIC Eigen3::Eigen Threads::Threads gtest gtest_main mpack palimpsest)
 gtest_discover_tests(DictionaryTest)
+
+add_executable(DictionaryUpdate DictionaryUpdate.cpp)
+target_include_directories(DictionaryUpdate PUBLIC ../third_party/cppcodec)
+target_link_libraries(DictionaryUpdate PUBLIC Eigen3::Eigen Threads::Threads gtest gtest_main mpack palimpsest)
+gtest_discover_tests(DictionaryUpdate)
+
+add_executable(DictionaryPythonLike DictionaryPythonLike.cpp)
+target_include_directories(DictionaryPythonLike PUBLIC ../third_party/cppcodec)
+target_link_libraries(DictionaryPythonLike PUBLIC Eigen3::Eigen Threads::Threads gtest gtest_main mpack palimpsest)
+gtest_discover_tests(DictionaryPythonLike)
+
+add_executable(ValueTest ValueTest.cpp)
+target_include_directories(ValueTest PUBLIC ../third_party/cppcodec)
+target_link_libraries(ValueTest PUBLIC Eigen3::Eigen Threads::Threads gtest gtest_main mpack palimpsest)
+gtest_discover_tests(ValueTest)
