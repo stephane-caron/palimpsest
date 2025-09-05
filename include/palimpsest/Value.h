@@ -147,7 +147,7 @@ class Value {
 
   /*! Cast value to its object's type after checking that it matches T.
    *
-   * @param[out] value Value to cast.
+   * @return Reference to the stored value with type T.
    *
    * @throw TypeError if the object's type does not match T.
    */
