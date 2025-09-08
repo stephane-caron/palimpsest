@@ -67,14 +67,14 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 |---------------|---------------------------|
 | [`dict.clear`](https://docs.python.org/3/library/stdtypes.html#dict.clear) | [`Dictionary::clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
 | [`dict.copy`](https://docs.python.org/3/library/stdtypes.html#dict.copy) | Dictionaries are [move-only](https://github.com/stephane-caron/palimpsest?tab=readme-ov-file#non-features) |
-| [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | `Dictionary::deepcopy` |
+| [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | [`Dictionary::deepcopy`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a2ddbd4316657e27d11c5a07a476841e6) |
 | [`dict.fromkeys`](https://docs.python.org/3/library/stdtypes.html#dict.fromkeys) | not implemented yet ✖️  |
 | [`dict.get`](https://docs.python.org/3/library/stdtypes.html#dict.get) | [`Dictionary::get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
 | [`dict.items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | `Dictionary::items` |
 | [`dict.keys`](https://docs.python.org/3/library/stdtypes.html#dict.keys) | [`Dictionary::keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
-| [`dict.pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | `Dictionary::pop` |
+| [`dict.pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | [`Dictionary::pop`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a26a5e2623e96221ddae92677f41a69a1) |
 | [`dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | not implemented yet ✖️  |
-| [`dict.setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | `Dictionary::setdefault` |
+| [`dict.setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | [`Dictionary::setdefault`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#aaa4a895aa93a7483ea49d3231f5e0b6b) |
 | [`dict.update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`Dictionary::update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
 | [`dict.values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
 
