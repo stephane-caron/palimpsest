@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Add `Dictionary::deepcopy` function
+- Add `Dictionary::items` function
 - Add `Dictionary::pop` function to remove a specific key and return its value
 - Add `Dictionary::setdefault` function
 - Add copy constructor to values
