@@ -70,7 +70,7 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 | [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | [`Dictionary::deepcopy`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a2ddbd4316657e27d11c5a07a476841e6) |
 | [`dict.fromkeys`](https://docs.python.org/3/library/stdtypes.html#dict.fromkeys) | not implemented yet ✖️  |
 | [`dict.get`](https://docs.python.org/3/library/stdtypes.html#dict.get) | [`Dictionary::get`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a74bd56b0ec9e4219f54430bcb6f9a084) |
-| [`dict.items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | `Dictionary::items` |
+| [`dict.items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | [`Dictionary::items`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ac38517fbe0ac91132d98216224577f48) |
 | [`dict.keys`](https://docs.python.org/3/library/stdtypes.html#dict.keys) | [`Dictionary::keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
 | [`dict.pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | [`Dictionary::pop`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a26a5e2623e96221ddae92677f41a69a1) |
 | [`dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | not implemented yet ✖️  |

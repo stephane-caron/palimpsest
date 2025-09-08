@@ -139,13 +139,26 @@ class Dictionary {
 
   /*! Return an iterable view of the dictionary's (key, value) pairs.
    *
-   * @return A vector of pairs containing key strings and references to
-   * Dictionary values.
+   * @return Vector of pairs containing key strings and references to
+   *     Dictionary values.
    *
-   * @note This function has the same semantics as Python's dict.items(). Each
-   * pair contains the key as a string and a reference to the Dictionary at that
-   * key. The Dictionary reference can be further used with as<T>() to get typed
-   * values.
+   * This function has the same semantics as Python's dict.items(). Each pair
+   * contains the key as a string and a reference to the Dictionary at that
+   * key. The Dictionary reference can be further used with as<T>() to get
+   * typed values.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   * dict.set("pressure", 101.3);
+   * dict("sensors").set("count", 3);
+   *
+   * for (const auto& [key, value_ref] : dict.items()) {
+   *   const Dictionary& value = value_ref.get();
+   *   std::cout << key << ": " << value << std::endl;
+   * }
+   * @endcode
    */
   std::vector<std::pair<std::string, std::reference_wrapper<const Dictionary>>>
   items() const noexcept;
