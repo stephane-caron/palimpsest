@@ -42,7 +42,7 @@ using exceptions::TypeError;
  *
  * This type allows us to store and retrieve C++ objects as follows:
  *
- * @code{cpp}
+ * @code
  * Dictionary dict;
  * // create a vector of 4 double-precision numbers with value 42
  * dict.insert<std::vector<double>>("TheAnswer", 4, 42);
@@ -62,7 +62,7 @@ using exceptions::TypeError;
  *
  * To handle inheritance, we need to explicitely recall the class hierarchy:
  *
- * @code{cpp}
+ * @code
  * struct A {};
  * struct B : public A {};
  *
@@ -346,6 +346,16 @@ class Dictionary {
    * @note This function has the same semantics as Python's dict.setdefault(key,
    * default). It has the same semantics as @ref insert, except that it does
    * not warn when returning an existing value.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   *
+   * double& temp = dict.setdefault<double>("temperature", 20.0);  // 25.5
+   * double& pressure = dict.setdefault<double>("pressure", 101.3); // 101.3
+   * std::cout << dict.size() << std::endl;  // 2
+   * @endcode
    */
   template <typename T>
   T &setdefault(const std::string &key, const T &default_value) {
@@ -504,7 +514,7 @@ class Dictionary {
    * class includes user-defined conversion functions to value types, so that
    * we can write:
    *
-   * @code{cpp}
+   * @code
    * Eigen::Vector3d& position = dict("position");
    * auto& position = dict("position").as<Eigen::Vector3d>();  // equivalent
    * auto& position = dict.get<Eigen::Vector3d>("position");   // equivalent
@@ -534,7 +544,7 @@ class Dictionary {
   /*! Create a deep copy of an existing dictionary.
    *
    * @param[in] other Dictionary to copy.
-   * @return A new dictionary that is a deep copy of the input.
+   * @return New dictionary that is a deep copy of the input.
    *
    * @throw TypeError if deserialized data types cannot be handled.
    */
@@ -582,7 +592,7 @@ class Dictionary {
   /*! Compute the difference between this dictionary and another.
    *
    * @param[in] other Dictionary to compare with.
-   * @return A new dictionary containing key-value pairs that are in this
+   * @return New dictionary containing key-value pairs that are in this
    *     dictionary and either not in other, or in other but with different
    *     values.
    *
