@@ -252,6 +252,17 @@ std::vector<std::string> Dictionary::keys() const noexcept {
   return out;
 }
 
+std::vector<std::pair<std::string, std::reference_wrapper<const Dictionary>>>
+Dictionary::items() const noexcept {
+  std::vector<std::pair<std::string, std::reference_wrapper<const Dictionary>>>
+      out;
+  out.reserve(map_.size());
+  for (const auto &key_child : map_) {
+    out.emplace_back(key_child.first, std::cref(*key_child.second));
+  }
+  return out;
+}
+
 void Dictionary::remove(const std::string &key) noexcept {
   auto it = map_.find(key);
   if (it == map_.end()) {

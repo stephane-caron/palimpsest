@@ -137,6 +137,19 @@ class Dictionary {
   //! Return the list of keys of the dictionary.
   std::vector<std::string> keys() const noexcept;
 
+  /*! Return an iterable view of the dictionary's (key, value) pairs.
+   *
+   * @return A vector of pairs containing key strings and references to
+   * Dictionary values.
+   *
+   * @note This function has the same semantics as Python's dict.items(). Each
+   * pair contains the key as a string and a reference to the Dictionary at that
+   * key. The Dictionary reference can be further used with as<T>() to get typed
+   * values.
+   */
+  std::vector<std::pair<std::string, std::reference_wrapper<const Dictionary>>>
+  items() const noexcept;
+
   //! Return the number of keys in the dictionary.
   unsigned size() const noexcept { return map_.size(); }
 
