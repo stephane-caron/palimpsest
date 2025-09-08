@@ -444,7 +444,18 @@ class Dictionary {
    * @throw TypeError if there is an object at this key but it is not a value,
    *     or it is but its type does not match T.
    *
-   * @note This function has the same semantics as Python's dict.pop(key).
+   * This function has the same semantics as Python's dict.pop(key).
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   * dict.set("pressure", 101.3);
+   *
+   * double temp = dict.pop<double>("temperature");
+   * std::cout << "Removed: " << temp << std::endl;  // 25.5
+   * std::cout << "Size: " << dict.size() << std::endl;  // 1
+   * @endcode
    */
   template <typename T>
   T pop(const std::string &key) {
@@ -464,8 +475,17 @@ class Dictionary {
    * @throw TypeError if there is an object at this key but it is not a value,
    *     or it is but its type does not match T.
    *
-   * @note This function has the same semantics as Python's dict.pop(key,
-   * default).
+   * This function has the same semantics as Python's dict.pop(key, default).
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   *
+   * double temp = dict.pop<double>("temperature", 20.0);  // 25.5
+   * double missing = dict.pop<double>("missing", 20.0);   // 20.0
+   * std::cout << "Size: " << dict.size() << std::endl;    // 0
+   * @endcode
    */
   template <typename T>
   T pop(const std::string &key, const T &default_value) {
@@ -493,7 +513,18 @@ class Dictionary {
     }
   }
 
-  //! Remove all entries from the dictionary.
+  /*! Remove all entries from the dictionary.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   * dict.set("pressure", 101.3);
+   * std::cout << dict.size() << std::endl;  // 2
+   * dict.clear();
+   * std::cout << dict.size() << std::endl;  // 0
+   * @endcode
+   */
   void clear() noexcept;
 
   /*! Return a reference to the dictionary at key, performing an insertion if
@@ -547,6 +578,17 @@ class Dictionary {
    * @return New dictionary that is a deep copy of the input.
    *
    * @throw TypeError if deserialized data types cannot be handled.
+   *
+   * Example:
+   * @code
+   * Dictionary original;
+   * original.set("temperature", 25.5);
+   * original("sensors").set("count", 3);
+   *
+   * Dictionary copy = Dictionary::deepcopy(original);
+   * copy.set("temperature", 30.0);  // Does not affect original
+   * std::cout << original.get<double>("temperature") << std::endl;  // 25.5
+   * @endcode
    */
   static Dictionary deepcopy(const Dictionary &other);
 
@@ -576,6 +618,21 @@ class Dictionary {
    *
    * @throw TypeError if deserialized data types don't match those of the
    *     corresponding objects in the dictionary.
+   *
+   * Example:
+   * @code
+   * Dictionary dict1;
+   * dict1.set("temperature", 25.5);
+   * dict1.set("pressure", 101.3);
+   *
+   * Dictionary dict2;
+   * dict2.set("temperature", 30.0);  // This will overwrite dict1's temperature
+   * dict2.set("humidity", 65.0);     // This will be added to dict1
+   *
+   * dict1.update(dict2);
+   * std::cout << dict1.get<double>("temperature") << std::endl;  // 30.0
+   * std::cout << dict1.get<double>("humidity") << std::endl;     // 65.0
+   * @endcode
    */
   void update(const Dictionary &other);
 
