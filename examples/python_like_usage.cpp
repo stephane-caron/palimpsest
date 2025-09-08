@@ -68,6 +68,61 @@ int main() {
             << "'\n";
   std::cout << ">>> dict.get('nonexistent', 10.1)\n" << timeout << "\n";
 
+  // dict.clear() - Clear all contents
+  print_title("dict.clear");
+  Dictionary temp_dict;
+  temp_dict("a") = 1;
+  temp_dict("b") = 2;
+  std::cout << ">>> temp_dict\n" << temp_dict << "\n";
+  std::cout << ">>> temp_dict.clear()\n";
+  temp_dict.clear();
+  std::cout << ">>> temp_dict\n" << temp_dict << "\n";
+  std::cout << ">>> temp_dict.keys()\n";
+  print_dict_keys(temp_dict);
+  std::cout << "\n";
+
+  // dict.items() - Get all key-value pairs (like Python dict.items())
+  print_title("dict.items");
+  std::cout << ">>> for key, value in dict.items():\n";
+  std::cout << "...    print(f\"- {key=}, {value=}\")\n";
+  auto items = dict.items();
+  for (const auto& [key, value_ref] : dict.items()) {
+    const Dictionary& value = value_ref.get();
+    std::cout << "- key='" << key << "', value=" << value << std::endl;
+  }
+
+  // dict.pop(key) - Remove and return value (like Python dict.pop)
+  print_title("dict.pop");
+  std::cout << ">>> dict\n" << dict << "\n";
+  std::cout << ">>> dict.pop<bool>('active')\n";
+  double active = dict.pop<bool>("active");
+  std::cout << active << "\n";
+  std::cout << ">>> dict\n" << dict << "\n";
+
+  // dict.pop(key, default) - Remove and return value, or default if missing
+  std::cout << ">>> dict.pop<std::string>('missing_key', 'not_found')\n";
+  std::string missing_result =
+      dict.pop<std::string>("missing_key", "not_found");
+  std::cout << "'" << missing_result << "'\n";
+
+  std::cout << ">>> dict\n" << dict << "\n";
+  std::cout << ">>> dict.pop<std::string>('name')\n";
+  std::string popped_name = dict.pop<std::string>("name");
+  std::cout << "'" << popped_name << "'\n";
+  std::cout << ">>> dict\n" << dict << "\n";
+
+  // dict.setdefault(key, default) - Get value, or insert and return default
+  print_title("dict.setdefault");
+  std::cout << ">>> dict.setdefault('city', 'Tokyo')\n";
+  std::string& city = dict.setdefault<std::string>("city", "Tokyo");
+  std::cout << "'" << city << "'\n";
+  std::cout << ">>> dict['city']\n'" << dict.get<std::string>("city") << "'\n";
+
+  std::cout << ">>> dict.setdefault('city', 'London')\n";
+  std::string& existing_city = dict.setdefault<std::string>("city", "London");
+  std::cout << "'" << existing_city << "'\n";
+  std::cout << ">>> dict['city']\n'" << dict.get<std::string>("city") << "'\n";
+
   // dict.update(other) - Update with another dictionary
   print_title("dict.update");
   Dictionary updates;
@@ -84,51 +139,6 @@ int main() {
   std::cout << ">>> dict.keys()\n";
   print_dict_keys(dict);
   std::cout << std::endl;
-
-  // dict.clear() - Clear all contents
-  print_title("dict.clear");
-  Dictionary temp_dict;
-  temp_dict("a") = 1;
-  temp_dict("b") = 2;
-  std::cout << ">>> temp_dict\n" << temp_dict << "\n";
-  std::cout << ">>> temp_dict.clear()\n";
-  temp_dict.clear();
-  std::cout << ">>> temp_dict\n" << temp_dict << "\n";
-  std::cout << ">>> temp_dict.keys()\n";
-  print_dict_keys(temp_dict);
-  std::cout << "\n";
-
-  // dict.pop(key) - Remove and return value (like Python dict.pop)
-  print_title("dict.pop");
-  std::cout << ">>> dict\n" << dict << "\n";
-  std::cout << ">>> dict.pop<double>('humidity')\n";
-  double humidity = dict.pop<double>("humidity");
-  std::cout << humidity << "\n";
-  std::cout << ">>> dict\n" << dict << "\n";
-
-  // dict.pop(key, default) - Remove and return value, or default if missing
-  std::cout << ">>> dict.pop<std::string>('missing_key', 'not_found')\n";
-  std::string missing_result =
-      dict.pop<std::string>("missing_key", "not_found");
-  std::cout << "'" << missing_result << "'\n";
-
-  std::cout << ">>> dict\n" << dict << "\n";
-  std::cout << ">>> dict.pop<std::string>('location')\n";
-  std::string location = dict.pop<std::string>("location");
-  std::cout << "'" << location << "'\n";
-  std::cout << ">>> dict\n" << dict << "\n";
-
-  // dict.setdefault(key, default) - Get value, or insert and return default
-  print_title("dict.setdefault");
-  std::cout << ">>> dict.setdefault('city', 'Tokyo')\n";
-  std::string& city = dict.setdefault<std::string>("city", "Tokyo");
-  std::cout << "'" << city << "'\n";
-  std::cout << ">>> dict['city']\n'" << dict.get<std::string>("city") << "'\n";
-
-  std::cout << ">>> dict.setdefault('city', 'London')\n";
-  std::string& existing_city = dict.setdefault<std::string>("city", "London");
-  std::cout << "'" << existing_city << "'\n";
-  std::cout << ">>> dict['city']\n'" << dict.get<std::string>("city") << "'\n";
 
   return EXIT_SUCCESS;
 }
