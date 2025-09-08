@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <string>
+#include <unordered_map>
 
 #include "palimpsest/Dictionary.h"
 #include "palimpsest/exceptions/TypeError.h"
@@ -98,4 +99,120 @@ TEST_F(DictionaryPythonLikeTest, SetDefaultMultipleCallsConsistency) {
   EXPECT_EQ(result1, "default");
   EXPECT_EQ(result2, "default");
   EXPECT_EQ(&result1, &result2);  // Should return same reference
+}
+
+TEST_F(DictionaryPythonLikeTest, ItemsEmptyDictionary) {
+  auto items = dict_.items();
+
+  EXPECT_TRUE(items.empty());
+  EXPECT_EQ(items.size(), 0);
+}
+
+TEST_F(DictionaryPythonLikeTest, ItemsSingleValue) {
+  dict_("name") = std::string("test");
+
+  auto items = dict_.items();
+
+  EXPECT_EQ(items.size(), 1);
+  EXPECT_EQ(items[0].first, "name");
+  EXPECT_EQ(items[0].second.get().as<std::string>(), "test");
+}
+
+TEST_F(DictionaryPythonLikeTest, ItemsMultipleValues) {
+  dict_("name") = std::string("Alice");
+  dict_("age") = 30;
+  dict_("active") = true;
+
+  auto items = dict_.items();
+
+  EXPECT_EQ(items.size(), 3);
+
+  std::unordered_map<std::string, bool> found_keys;
+  for (const auto& item : items) {
+    const std::string& key = item.first;
+    const Dictionary& value = item.second.get();
+
+    found_keys[key] = true;
+
+    if (key == "name") {
+      EXPECT_EQ(value.as<std::string>(), "Alice");
+    } else if (key == "age") {
+      EXPECT_EQ(value.as<int>(), 30);
+    } else if (key == "active") {
+      EXPECT_EQ(value.as<bool>(), true);
+    }
+  }
+
+  EXPECT_TRUE(found_keys["name"]);
+  EXPECT_TRUE(found_keys["age"]);
+  EXPECT_TRUE(found_keys["active"]);
+}
+
+TEST_F(DictionaryPythonLikeTest, ItemsNestedDictionaries) {
+  auto& config = dict_("config");
+  config("timeout") = 30.0;
+  config("debug") = false;
+
+  dict_("version") = std::string("1.0");
+
+  auto items = dict_.items();
+
+  EXPECT_EQ(items.size(), 2);
+
+  for (const auto& item : items) {
+    const std::string& key = item.first;
+    const Dictionary& value = item.second.get();
+
+    if (key == "config") {
+      EXPECT_TRUE(value.is_map());
+      EXPECT_TRUE(value.has("timeout"));
+      EXPECT_TRUE(value.has("debug"));
+      EXPECT_EQ(value.get<double>("timeout"), 30.0);
+      EXPECT_EQ(value.get<bool>("debug"), false);
+    } else if (key == "version") {
+      EXPECT_TRUE(value.is_value());
+      EXPECT_EQ(value.as<std::string>(), "1.0");
+    }
+  }
+}
+
+TEST_F(DictionaryPythonLikeTest, ItemsIteratorUsage) {
+  dict_("x") = 1;
+  dict_("y") = 2;
+  dict_("z") = 3;
+
+  auto items = dict_.items();
+
+  int sum = 0;
+  for (const auto& [key, value_ref] : items) {
+    sum += value_ref.get().as<int>();
+  }
+
+  EXPECT_EQ(sum, 6);
+}
+
+TEST_F(DictionaryPythonLikeTest, ItemsWithDifferentTypes) {
+  dict_("string") = std::string("hello");
+  dict_("integer") = 42;
+  dict_("double") = 3.14;
+  dict_("bool") = true;
+
+  auto items = dict_.items();
+
+  EXPECT_EQ(items.size(), 4);
+
+  for (const auto& item : items) {
+    const std::string& key = item.first;
+    const Dictionary& value = item.second.get();
+
+    if (key == "string") {
+      EXPECT_EQ(value.as<std::string>(), "hello");
+    } else if (key == "integer") {
+      EXPECT_EQ(value.as<int>(), 42);
+    } else if (key == "double") {
+      EXPECT_EQ(value.as<double>(), 3.14);
+    } else if (key == "bool") {
+      EXPECT_EQ(value.as<bool>(), true);
+    }
+  }
 }
