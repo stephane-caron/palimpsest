@@ -92,19 +92,16 @@ The two main assumptions in palimpsest dictionaries are that:
 ### Features
 
 * Prioritizes speed over user-friendliness
-* Returns references to any stored value or sub-dictionaries
-* Built for fast inter-process communication with [Python](https://www.python.org/)
+* Returns references to any stored value or sub-dictionary
 * Built-in support for [Eigen](https://eigen.tuxfamily.org/)
-* Serialize to and deserialize from [MessagePack](https://msgpack.org/)
 * Print dictionaries to standard output as [JSON](https://www.json.org/json-en.html)
-* Extensible to custom types, as long as they deserialize unambiguously
+* Serialize to and deserialize from [MessagePack](https://msgpack.org/)
 
 ### Non-features
 
 * Prioritizes speed over user-friendliness
-* Dictionaries are move-only (no copy constructor)
+* Dictionaries are move-only (shallow copies are not available)
 * Array values are mostly limited to Eigen tensors (matrix, quaternion, vector)
-* Shallow and deep copies are not implemented ([PRs welcome](CONTRIBUTING.md))
 * Types need to deserialize unambiguously (positive integers always deserialize to `unsigned`)
 
 Check out the [alternatives](https://github.com/stephane-caron/palimpsest#see-also) below if any of these design decisions doesn't match your requirements.
