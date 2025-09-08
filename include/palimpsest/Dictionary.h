@@ -134,7 +134,23 @@ class Dictionary {
     return (map_.find(key) != map_.end());
   }
 
-  //! Return the list of keys of the dictionary.
+  /*! Return the list of keys of the dictionary.
+   *
+   * @return Vector containing all keys in the dictionary.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   * dict.set("pressure", 101.3);
+   * dict("sensors").set("count", 3);
+   *
+   * std::vector<std::string> keys = dict.keys();
+   * for (const std::string& key : keys) {
+   *   std::cout << "Key: " << key << std::endl;
+   * }
+   * @endcode
+   */
   std::vector<std::string> keys() const noexcept;
 
   /*! Return an iterable view of the dictionary's (key, value) pairs.
@@ -202,6 +218,14 @@ class Dictionary {
    *
    * @throw KeyError if there is no object at this key.
    * @throw TypeError if there is an object at this key, but its type is not T.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("temperature", 25.5);
+   * double& temp = dict.get<double>("temperature");
+   * temp = 30.0;  // Modifies the value in the dictionary
+   * @endcode
    */
   template <typename T>
   T &get(const std::string &key) {
@@ -215,6 +239,12 @@ class Dictionary {
    *
    * @throw KeyError if there is no object at this key.
    * @throw TypeError if there is an object at this key, but its type is not T.
+   *
+   * Example:
+   * @code
+   * const Dictionary dict;
+   * const double& temp = dict.get<double>("temperature");
+   * @endcode
    */
   template <typename T>
   const T &get(const std::string &key) const {
@@ -230,6 +260,14 @@ class Dictionary {
    *
    * @throw TypeError if the object at this key is not a value, or it is but
    *     its type does is not T.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict.set("count", 42);
+   * int value = dict.get<int>("count", 0);     // Returns 42
+   * int missing = dict.get<int>("missing", 0); // Returns 0 (default)
+   * @endcode
    */
   template <typename T>
   const T &get(const std::string &key, const T &default_value) const {
