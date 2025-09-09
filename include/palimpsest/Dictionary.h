@@ -626,15 +626,17 @@ class Dictionary {
    * @param[in] keys Container of keys (any iterable with string elements).
    * @return New dictionary with the specified keys and empty dictionary values.
    *
-   * This function has the same semantics as Python's dict.fromkeys(iterable)
-   * when no value is specified. In Python default values are set to None,
-   * while in palimpsest they are empty dictionaries.
+   * This function is similar to Python's dict.fromkeys(iterable) when no value
+   * is specified. However, in Python default values are set to None, while in
+   * palimpsest default values are set to empty dictionaries (that may become
+   * either values or dictionaries).
    *
    * Example:
    * @code
-   * std::vector<std::string> keys = {"config", "data", "meta"};
+   * std::vector<std::string> keys = {"config", "temperature"};
    * Dictionary dict = Dictionary::fromkeys(keys);
-   * dict("config")("timeout") = 30.0;  // Can use the empty dictionary
+   * sensor_dict("temperature") = 12.1;       // Can become a value
+   * sensor_dict("config")("checks") = true;  // Can become a dictionary
    * @endcode
    */
   template <typename Container>
