@@ -81,6 +81,15 @@ int main() {
   print_dict_keys(temp_dict);
   std::cout << "\n";
 
+  // dict.fromkeys(keys, value) - Create dictionary from keys with same value
+  print_title("dict.fromkeys");
+  std::vector<std::string> sensor_names = {"temperature", "pressure",
+                                           "humidity"};
+  Dictionary sensor_dict = Dictionary::fromkeys(sensor_names, 0.0);
+  std::cout << ">>> sensor_names = ['temperature', 'pressure', 'humidity']\n";
+  std::cout << ">>> sensor_dict = Dictionary::fromkeys(sensor_names, 0.0)\n";
+  std::cout << ">>> sensor_dict\n" << sensor_dict << "\n";
+
   // dict.items() - Get all key-value pairs (like Python dict.items())
   print_title("dict.items");
   std::cout << ">>> for key, value in dict.items():\n";
