@@ -10,6 +10,7 @@
 #include <Eigen/Geometry>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using palimpsest::Dictionary;
 

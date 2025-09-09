@@ -5,6 +5,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "palimpsest/Dictionary.h"
 #include "palimpsest/exceptions/TypeError.h"
