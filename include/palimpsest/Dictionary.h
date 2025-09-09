@@ -592,6 +592,60 @@ class Dictionary {
    */
   static Dictionary deepcopy(const Dictionary &other);
 
+  /*! Create a new dictionary with keys from an iterable container and all
+   * values set to the same value.
+   *
+   * @param[in] keys Container of keys (any iterable with string elements).
+   * @param[in] value Value to set for all keys.
+   * @return New dictionary with the specified keys and value.
+   *
+   * This function has the same semantics as Python's dict.fromkeys(iterable,
+   * value). All keys will be set to the same value.
+   *
+   * Example:
+   * @code
+   * std::vector<std::string> keys = {"name", "age", "city"};
+   * Dictionary dict = Dictionary::fromkeys(keys, std::string("unknown"));
+   * std::cout << dict.get<std::string>("name") << std::endl;  // "unknown"
+   * std::cout << dict.get<std::string>("age") << std::endl;   // "unknown"
+   * std::cout << dict.get<std::string>("city") << std::endl;  // "unknown"
+   * @endcode
+   */
+  template <typename Container, typename T>
+  static Dictionary fromkeys(const Container &keys, const T &value) {
+    Dictionary result;
+    for (const auto &key : keys) {
+      result(key) = value;
+    }
+    return result;
+  }
+
+  /*! Create a new dictionary with keys from an iterable container and all
+   * values set to empty dictionaries.
+   *
+   * @param[in] keys Container of keys (any iterable with string elements).
+   * @return New dictionary with the specified keys and empty dictionary values.
+   *
+   * This function has the same semantics as Python's dict.fromkeys(iterable)
+   * when no value is specified. In Python default values are set to None,
+   * while in palimpsest they are empty dictionaries.
+   *
+   * Example:
+   * @code
+   * std::vector<std::string> keys = {"config", "data", "meta"};
+   * Dictionary dict = Dictionary::fromkeys(keys);
+   * dict("config")("timeout") = 30.0;  // Can use the empty dictionary
+   * @endcode
+   */
+  template <typename Container>
+  static Dictionary fromkeys(const Container &keys) {
+    Dictionary result;
+    for (const auto &key : keys) {
+      result(key);  // Create empty dictionary for each key
+    }
+    return result;
+  }
+
   /*! Serialize to raw MessagePack data.
    *
    * @param[out] buffer Buffer that will hold the message data.
