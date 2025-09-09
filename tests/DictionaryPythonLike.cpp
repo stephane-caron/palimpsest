@@ -216,3 +216,109 @@ TEST_F(DictionaryPythonLikeTest, ItemsWithDifferentTypes) {
     }
   }
 }
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithValue) {
+  std::vector<std::string> keys = {"name", "age", "city"};
+  Dictionary dict = Dictionary::fromkeys(keys, std::string("unknown"));
+
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_TRUE(dict.has("name"));
+  EXPECT_TRUE(dict.has("age"));
+  EXPECT_TRUE(dict.has("city"));
+
+  EXPECT_EQ(dict.get<std::string>("name"), "unknown");
+  EXPECT_EQ(dict.get<std::string>("age"), "unknown");
+  EXPECT_EQ(dict.get<std::string>("city"), "unknown");
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithoutValue) {
+  std::vector<std::string> keys = {"config", "data", "meta"};
+  Dictionary dict = Dictionary::fromkeys(keys);
+
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_TRUE(dict.has("config"));
+  EXPECT_TRUE(dict.has("data"));
+  EXPECT_TRUE(dict.has("meta"));
+
+  EXPECT_TRUE(dict("config").is_empty());
+  EXPECT_TRUE(dict("data").is_empty());
+  EXPECT_TRUE(dict("meta").is_empty());
+
+  // Should be able to use as nested dictionaries
+  dict("config")("timeout") = 30.0;
+  EXPECT_EQ(dict("config").get<double>("timeout"), 30.0);
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithNumericValue) {
+  std::vector<std::string> keys = {"x", "y", "z"};
+  Dictionary dict = Dictionary::fromkeys(keys, 42);
+
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_EQ(dict.get<int>("x"), 42);
+  EXPECT_EQ(dict.get<int>("y"), 42);
+  EXPECT_EQ(dict.get<int>("z"), 42);
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithBoolValue) {
+  std::vector<std::string> keys = {"enabled", "active", "visible"};
+  Dictionary dict = Dictionary::fromkeys(keys, true);
+
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_EQ(dict.get<bool>("enabled"), true);
+  EXPECT_EQ(dict.get<bool>("active"), true);
+  EXPECT_EQ(dict.get<bool>("visible"), true);
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithDoubleValue) {
+  std::vector<std::string> keys = {"temperature", "pressure", "humidity"};
+  Dictionary dict = Dictionary::fromkeys(keys, 25.5);
+
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_EQ(dict.get<double>("temperature"), 25.5);
+  EXPECT_EQ(dict.get<double>("pressure"), 25.5);
+  EXPECT_EQ(dict.get<double>("humidity"), 25.5);
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysEmptyContainer) {
+  std::vector<std::string> empty_keys;
+  Dictionary dict = Dictionary::fromkeys(empty_keys, std::string("default"));
+
+  EXPECT_EQ(dict.size(), 0);
+  EXPECT_TRUE(dict.is_empty());
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithInitializerList) {
+  std::vector<std::string> keys = {"a", "b", "c"};
+  Dictionary dict = Dictionary::fromkeys(keys, 100);
+
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_EQ(dict.get<int>("a"), 100);
+  EXPECT_EQ(dict.get<int>("b"), 100);
+  EXPECT_EQ(dict.get<int>("c"), 100);
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysWithDuplicateKeys) {
+  std::vector<std::string> keys = {"key1", "key2", "key1", "key3"};
+  Dictionary dict = Dictionary::fromkeys(keys, std::string("value"));
+
+  // Should have only 3 unique keys
+  EXPECT_EQ(dict.size(), 3);
+  EXPECT_TRUE(dict.has("key1"));
+  EXPECT_TRUE(dict.has("key2"));
+  EXPECT_TRUE(dict.has("key3"));
+  EXPECT_EQ(dict.get<std::string>("key1"), "value");
+  EXPECT_EQ(dict.get<std::string>("key2"), "value");
+  EXPECT_EQ(dict.get<std::string>("key3"), "value");
+}
+
+TEST_F(DictionaryPythonLikeTest, FromkeysModifyValues) {
+  std::vector<std::string> keys = {"counter1", "counter2"};
+  Dictionary dict = Dictionary::fromkeys(keys, 0);
+
+  // Modify one value
+  dict("counter1") = 10;
+
+  // Check that only the modified value changed
+  EXPECT_EQ(dict.get<int>("counter1"), 10);
+  EXPECT_EQ(dict.get<int>("counter2"), 0);
+}
