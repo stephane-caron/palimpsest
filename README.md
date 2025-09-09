@@ -91,7 +91,6 @@ The two main assumptions in palimpsest dictionaries are that:
 
 ### Features
 
-* Prioritizes speed over user-friendliness
 * Returns references to any stored value or sub-dictionary
 * Built-in support for [Eigen](https://eigen.tuxfamily.org/)
 * Print dictionaries to standard output as [JSON](https://www.json.org/json-en.html)
@@ -99,10 +98,9 @@ The two main assumptions in palimpsest dictionaries are that:
 
 ### Non-features
 
-* Prioritizes speed over user-friendliness
-* Dictionaries are move-only (shallow copies are not available)
+* Dictionaries are move-only (deep copies are possible but now shallow copies)
+* Types need to deserialize unambiguously (*e.g.*, positive integers always deserialize to `unsigned`)
 * Array values are mostly limited to Eigen tensors (matrix, quaternion, vector)
-* Types need to deserialize unambiguously (positive integers always deserialize to `unsigned`)
 
 Check out the [alternatives](https://github.com/stephane-caron/palimpsest#see-also) below if any of these design decisions doesn't match your requirements.
 
