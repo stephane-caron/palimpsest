@@ -121,6 +121,20 @@ int main() {
   std::cout << "'" << popped_name << "'\n";
   std::cout << ">>> dict\n" << dict << "\n";
 
+  // dict.popitem() - Remove and return an arbitrary key-value pair
+  print_title("dict.popitem");
+  Dictionary items_dict;
+  items_dict("x") = 10;
+  items_dict("y") = 20;
+  items_dict("z") = 30;
+  std::cout << ">>> items_dict\n" << items_dict << "\n";
+
+  std::cout << ">>> key, value = items_dict.popitem()\n";
+  auto [key, value] = items_dict.popitem();
+  std::cout << ">>> key\n'" << key << "'\n";
+  std::cout << ">>> value\n" << value.as<int>() << "\n";
+  std::cout << ">>> items_dict\n" << items_dict << "\n";
+
   // dict.setdefault(key, default) - Get value, or insert and return default
   print_title("dict.setdefault");
   std::cout << ">>> dict.setdefault('city', 'Tokyo')\n";
