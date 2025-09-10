@@ -16,12 +16,6 @@
 #include <string>
 #include <vector>
 
-#if not EIGEN_VERSION_AT_LEAST(3, 2, 90)
-namespace Eigen {
-using Index = Eigen::DenseIndex;
-}
-#endif
-
 /*! Intrusive flush function for std::vector.
  *
  * This is an intrusive flush function which modifies the writer's buffer in
