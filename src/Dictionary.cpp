@@ -263,6 +263,29 @@ Dictionary::items() const noexcept {
   return out;
 }
 
+std::pair<std::string, Dictionary> Dictionary::popitem() {
+  if (this->is_value()) {
+    throw TypeError(
+        __FILE__, __LINE__,
+        std::string(
+            "Cannot pop an item from non-dictionary object of type \"") +
+            value_.type_name() + "\".");
+  }
+  if (map_.empty()) {
+    throw KeyError("", __FILE__, __LINE__, "popitem(): dictionary is empty");
+  }
+
+  // Get the first element from the map
+  auto it = map_.begin();
+  std::string key = it->first;
+
+  // Move value out before erasing it
+  Dictionary value = std::move(*it->second);
+  map_.erase(it);
+
+  return std::make_pair(std::move(key), std::move(value));
+}
+
 void Dictionary::remove(const std::string &key) noexcept {
   auto it = map_.find(key);
   if (it == map_.end()) {
