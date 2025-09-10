@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 
 - Add `Dictionary::deepcopy` function
 - Add `Dictionary::items` function
-- Add `Dictionary::pop` function to remove a specific key and return its value
+- Add `Dictionary::pop` function
+- Add `Dictionary::popitem` function
 - Add `Dictionary::setdefault` function
 - Add copy constructor to values
 - examples: Show how to use palimpsest dictionaries like Python ones
