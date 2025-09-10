@@ -8,9 +8,11 @@
 #include <vector>
 
 #include "palimpsest/Dictionary.h"
+#include "palimpsest/exceptions/KeyError.h"
 #include "palimpsest/exceptions/TypeError.h"
 
 using palimpsest::Dictionary;
+using palimpsest::exceptions::KeyError;
 using palimpsest::exceptions::TypeError;
 
 class DictionaryPythonLikeTest : public ::testing::Test {
@@ -322,4 +324,124 @@ TEST_F(DictionaryPythonLikeTest, FromkeysModifyValues) {
   // Check that only the modified value changed
   EXPECT_EQ(dict.get<int>("counter1"), 10);
   EXPECT_EQ(dict.get<int>("counter2"), 0);
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemBasicUsage) {
+  dict_("temperature") = 25.5;
+  dict_("pressure") = 101.3;
+  dict_("humidity") = 65.0;
+
+  EXPECT_EQ(dict_.size(), 3);
+
+  // Pop one item
+  auto [key, value] = dict_.popitem();
+
+  // Check that the dictionary size decreased
+  EXPECT_EQ(dict_.size(), 2);
+
+  // Check that we got a valid key-value pair
+  EXPECT_FALSE(key.empty());
+  EXPECT_TRUE(value.is_value());
+
+  // Verify the popped key is no longer in the dictionary
+  EXPECT_FALSE(dict_.has(key));
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemSpecificValues) {
+  dict_("name") = std::string("Alice");
+  dict_("age") = 30;
+  dict_("active") = true;
+
+  auto [key, value] = dict_.popitem();
+
+  // Check that we can extract the correct typed value
+  if (key == "name") {
+    EXPECT_EQ(value.as<std::string>(), "Alice");
+  } else if (key == "age") {
+    EXPECT_EQ(value.as<int>(), 30);
+  } else if (key == "active") {
+    EXPECT_EQ(value.as<bool>(), true);
+  } else {
+    FAIL() << "Unexpected key: " << key;
+  }
+
+  // Verify the original dictionary no longer has this key
+  EXPECT_FALSE(dict_.has(key));
+  EXPECT_EQ(dict_.size(), 2);
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemEmptyDictionary) {
+  EXPECT_TRUE(dict_.is_empty());
+  EXPECT_THROW(dict_.popitem(), KeyError);
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemOnNonDictionary) {
+  dict_ = std::string("I am a string value");
+
+  EXPECT_THROW(dict_.popitem(), TypeError);
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemMultipleItems) {
+  dict_("x") = 1.0;
+  dict_("y") = 2.0;
+  dict_("z") = 3.0;
+
+  std::unordered_map<std::string, double> popped_items;
+
+  // Pop all items
+  while (dict_.size() > 0) {
+    auto [key, value] = dict_.popitem();
+    popped_items[key] = value.as<double>();
+  }
+
+  // Check that we popped all items correctly
+  EXPECT_EQ(popped_items.size(), 3);
+  EXPECT_EQ(popped_items["x"], 1.0);
+  EXPECT_EQ(popped_items["y"], 2.0);
+  EXPECT_EQ(popped_items["z"], 3.0);
+
+  // Dictionary should be empty now
+  EXPECT_TRUE(dict_.is_empty());
+  EXPECT_EQ(dict_.size(), 0);
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemNestedDictionary) {
+  auto& config = dict_("config");
+  config("timeout") = 30.0;
+  config("debug") = false;
+
+  dict_("version") = std::string("1.0");
+
+  auto [key, value] = dict_.popitem();
+
+  if (key == "config") {
+    EXPECT_TRUE(value.is_map());
+    EXPECT_TRUE(value.has("timeout"));
+    EXPECT_TRUE(value.has("debug"));
+    EXPECT_EQ(value.get<double>("timeout"), 30.0);
+    EXPECT_EQ(value.get<bool>("debug"), false);
+  } else if (key == "version") {
+    EXPECT_TRUE(value.is_value());
+    EXPECT_EQ(value.as<std::string>(), "1.0");
+  } else {
+    FAIL() << "Unexpected key: " << key;
+  }
+
+  EXPECT_EQ(dict_.size(), 1);
+}
+
+TEST_F(DictionaryPythonLikeTest, PopitemReturnedValueIsIndependent) {
+  dict_("temperature") = 25.5;
+
+  auto [key, value] = dict_.popitem();
+  EXPECT_EQ(key, "temperature");
+  EXPECT_EQ(value.as<double>(), 25.5);
+
+  // Modify the returned value
+  value = 30.0;
+  EXPECT_EQ(value.as<double>(), 30.0);
+
+  // The original dictionary should be empty (value was moved)
+  EXPECT_TRUE(dict_.is_empty());
+  EXPECT_FALSE(dict_.has("temperature"));
 }
