@@ -25,6 +25,7 @@
 #include <utility>
 #include <vector>
 
+//! Internal namespace for writing to MessagePack buffers
 namespace palimpsest::mpack {
 
 /*! Write MessagePack (using MPack's Write API) to a vector of bytes.

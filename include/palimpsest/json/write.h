@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+//! Internal functions for writing to JSON streams
 namespace palimpsest::json {
 
 /*

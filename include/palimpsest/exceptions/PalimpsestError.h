@@ -5,6 +5,7 @@
 
 #include <string>
 
+//! Exceptions raised by the library.
 namespace palimpsest::exceptions {
 
 //! Error with file and line references to the calling code.

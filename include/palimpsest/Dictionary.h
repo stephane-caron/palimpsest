@@ -30,6 +30,7 @@
 #include "palimpsest/mpack/read.h"
 #include "palimpsest/mpack/write.h"
 
+//! Main library namespace
 namespace palimpsest {
 
 using exceptions::TypeError;
