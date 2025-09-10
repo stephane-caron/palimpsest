@@ -73,7 +73,7 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 | [`dict.items`](https://docs.python.org/3/library/stdtypes.html#dict.items) | [`Dictionary::items`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ac38517fbe0ac91132d98216224577f48) |
 | [`dict.keys`](https://docs.python.org/3/library/stdtypes.html#dict.keys) | [`Dictionary::keys`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#abb1589b67dbeadec8774833921644798)  |
 | [`dict.pop`](https://docs.python.org/3/library/stdtypes.html#dict.pop) | [`Dictionary::pop`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a26a5e2623e96221ddae92677f41a69a1) |
-| [`dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | not implemented yet ✖️  |
+| [`dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | `Dictionary::popitem` |
 | [`dict.setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | [`Dictionary::setdefault`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#aaa4a895aa93a7483ea49d3231f5e0b6b) |
 | [`dict.update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`Dictionary::update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
 | [`dict.values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
