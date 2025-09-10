@@ -516,14 +516,15 @@ class Dictionary {
   /*! Remove and return a (key, value) pair from the dictionary.
    *
    * @return Pair containing the key string and the Dictionary value that was
-   *     removed. The latter value can be further used with @ref as<T>() to
-   *     recover a typed reference.
+   *     removed. The latter value can be further used with @ref as to recover
+   *     a typed reference.
    *
    * @throw KeyError if the dictionary is empty.
    * @throw TypeError if the dictionary is not a map.
    *
-   * This function follows the semantics of Python's dict.popitem(). Pairs are
-   * thus returned in LIFO (last-in, first-out) order.
+   * @note Contrary to Python's dict.popitem(), this function does not
+   * guarantee that pairs are returned in LIFO (last-in, first-out) order
+   * (although they will likely be in practice).
    *
    * Example:
    * @code

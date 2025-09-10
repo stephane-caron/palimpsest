@@ -78,6 +78,11 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 | [`dict.update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`Dictionary::update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
 | [`dict.values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
 
+There are a few differences:
+
+- Dictionaries are move-only: there is no `copy` function matching Python's `dict.copy`, but `Dictionary::deepcopy` matches Python's `copy.deepcopy`.
+- Dictionaries do not conserve insertion order, whereas insertion order conservation is guaranteed since Python 3.7.
+
 Implementing one of the missing functions is a great way to [contribute](CONTRIBUTING.md) to this project.
 
 ## Features and non-features
