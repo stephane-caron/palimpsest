@@ -939,18 +939,4 @@ class Dictionary {
 
 }  // namespace palimpsest
 
-namespace fmt {
-
-//! Dictionary formatter.
-template <>
-struct formatter<palimpsest::Dictionary> : public formatter<string_view> {
-  template <typename FormatContext>
-  auto format(const palimpsest::Dictionary &dict,
-              FormatContext &ctx) -> decltype(ctx.out()) {
-    std::ostringstream oss;
-    oss << dict;
-    return formatter<string_view>::format(oss.str(), ctx);
-  }
-};
-
-}  // namespace fmt
+#include "palimpsest/internal/fmt_formatter.h"
