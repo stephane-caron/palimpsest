@@ -948,7 +948,6 @@ INPUT                  = README.md \
                          docs/dev-notes.md \
                          include/palimpsest \
                          include/palimpsest/exceptions \
-                         include/palimpsest/internal \
                          include/palimpsest/json \
                          include/palimpsest/mpack \
                          src \
