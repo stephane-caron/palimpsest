@@ -263,6 +263,16 @@ Dictionary::items() const noexcept {
   return out;
 }
 
+std::vector<std::reference_wrapper<const Dictionary>> Dictionary::values()
+    const noexcept {
+  std::vector<std::reference_wrapper<const Dictionary>> out;
+  out.reserve(map_.size());
+  for (const auto &key_child : map_) {
+    out.emplace_back(std::cref(*key_child.second));
+  }
+  return out;
+}
+
 std::pair<std::string, Dictionary> Dictionary::popitem() {
   if (this->is_value()) {
     throw TypeError(
