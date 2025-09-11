@@ -161,7 +161,7 @@ class Dictionary {
    *
    * This function has the same semantics as Python's dict.items(). Each pair
    * contains the key as a string and a reference to the Dictionary at that
-   * key. The Dictionary reference can be further used with as<T>() to get
+   * key. The Dictionary reference can be further used with @ref as to get
    * typed values.
    *
    * Example:
