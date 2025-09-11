@@ -95,6 +95,7 @@ int main() {
   print_title("dict.items");
   std::cout << ">>> for key, value in dict.items():\n";
   std::cout << "...    print(f\"- {key=}, {value=}\")\n";
+  std::cout << "...\n";
   auto items = dict.items();
   for (const auto& [key, value_ref] : dict.items()) {
     const Dictionary& value = value_ref.get();
