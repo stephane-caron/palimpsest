@@ -165,5 +165,17 @@ int main() {
   print_dict_keys(dict);
   std::cout << std::endl;
 
+  // dict.values() - Get all values (like Python dict.values())
+  print_title("dict.values");
+  std::cout << ">>> dict\n" << dict << "\n";
+  std::cout << ">>> for value in dict.values():\n";
+  std::cout << "...     print(f\"- {value=}\")\n";
+  std::cout << "...\n";
+  auto values = dict.values();
+  for (const auto& value_ref : values) {
+    const Dictionary& value = value_ref.get();
+    std::cout << "- value=" << value << std::endl;
+  }
+
   return EXIT_SUCCESS;
 }
