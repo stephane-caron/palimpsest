@@ -326,6 +326,166 @@ TEST_F(DictionaryPythonLikeTest, FromkeysModifyValues) {
   EXPECT_EQ(dict.get<int>("counter2"), 0);
 }
 
+TEST_F(DictionaryPythonLikeTest, ValuesEmptyDictionary) {
+  auto values = dict_.values();
+
+  EXPECT_TRUE(values.empty());
+  EXPECT_EQ(values.size(), 0);
+}
+
+TEST_F(DictionaryPythonLikeTest, ValuesSingleValue) {
+  dict_("name") = std::string("test");
+
+  auto values = dict_.values();
+
+  EXPECT_EQ(values.size(), 1);
+  EXPECT_EQ(values[0].get().as<std::string>(), "test");
+}
+
+TEST_F(DictionaryPythonLikeTest, ValuesMultipleValues) {
+  dict_("name") = std::string("Alice");
+  dict_("age") = 30;
+  dict_("active") = true;
+
+  auto values = dict_.values();
+
+  EXPECT_EQ(values.size(), 3);
+
+  // Since the order is not guaranteed, collect all values and check they exist
+  std::vector<std::string> string_values;
+  std::vector<int> int_values;
+  std::vector<bool> bool_values;
+
+  for (const auto& value_ref : values) {
+    const Dictionary& value = value_ref.get();
+    if (value.is_value()) {
+      try {
+        string_values.push_back(value.as<std::string>());
+      } catch (const TypeError&) {
+        try {
+          int_values.push_back(value.as<int>());
+        } catch (const TypeError&) {
+          try {
+            bool_values.push_back(value.as<bool>());
+          } catch (const TypeError&) {
+            // Value is not a supported type in this test
+          }
+        }
+      }
+    }
+  }
+
+  EXPECT_EQ(string_values.size(), 1);
+  EXPECT_EQ(string_values[0], "Alice");
+  EXPECT_EQ(int_values.size(), 1);
+  EXPECT_EQ(int_values[0], 30);
+  EXPECT_EQ(bool_values.size(), 1);
+  EXPECT_EQ(bool_values[0], true);
+}
+
+TEST_F(DictionaryPythonLikeTest, ValuesNestedDictionaries) {
+  auto& config = dict_("config");
+  config("timeout") = 30.0;
+  config("debug") = false;
+
+  dict_("version") = std::string("1.0");
+
+  auto values = dict_.values();
+
+  EXPECT_EQ(values.size(), 2);
+
+  bool found_config = false;
+  bool found_version = false;
+
+  for (const auto& value_ref : values) {
+    const Dictionary& value = value_ref.get();
+
+    if (value.is_map()) {
+      found_config = true;
+      EXPECT_TRUE(value.has("timeout"));
+      EXPECT_TRUE(value.has("debug"));
+      EXPECT_EQ(value.get<double>("timeout"), 30.0);
+      EXPECT_EQ(value.get<bool>("debug"), false);
+    } else if (value.is_value()) {
+      found_version = true;
+      EXPECT_EQ(value.as<std::string>(), "1.0");
+    }
+  }
+
+  EXPECT_TRUE(found_config);
+  EXPECT_TRUE(found_version);
+}
+
+TEST_F(DictionaryPythonLikeTest, ValuesIteratorUsage) {
+  dict_("x") = 1;
+  dict_("y") = 2;
+  dict_("z") = 3;
+
+  auto values = dict_.values();
+
+  int sum = 0;
+  for (const auto& value_ref : values) {
+    sum += value_ref.get().as<int>();
+  }
+
+  EXPECT_EQ(sum, 6);
+}
+
+TEST_F(DictionaryPythonLikeTest, ValuesWithDifferentTypes) {
+  dict_("string") = std::string("hello");
+  dict_("integer") = 42;
+  dict_("double") = 3.14;
+  dict_("bool") = true;
+
+  auto values = dict_.values();
+
+  EXPECT_EQ(values.size(), 4);
+
+  // Since order is not guaranteed, collect values by type
+  std::vector<std::string> strings;
+  std::vector<int> integers;
+  std::vector<double> doubles;
+  std::vector<bool> bools;
+
+  for (const auto& value_ref : values) {
+    const Dictionary& value = value_ref.get();
+
+    // Try each type in order
+    try {
+      strings.push_back(value.as<std::string>());
+      continue;
+    } catch (const TypeError&) {
+    }
+
+    try {
+      integers.push_back(value.as<int>());
+      continue;
+    } catch (const TypeError&) {
+    }
+
+    try {
+      doubles.push_back(value.as<double>());
+      continue;
+    } catch (const TypeError&) {
+    }
+
+    try {
+      bools.push_back(value.as<bool>());
+      continue;
+    } catch (const TypeError&) {
+    }
+  }
+
+  EXPECT_EQ(strings.size(), 1);
+  EXPECT_EQ(strings[0], "hello");
+  EXPECT_EQ(integers.size(), 1);
+  EXPECT_EQ(integers[0], 42);
+  EXPECT_EQ(doubles.size(), 1);
+  EXPECT_EQ(doubles[0], 3.14);
+  EXPECT_EQ(bools.size(), 1);
+  EXPECT_EQ(bools[0], true);
+}
+
 TEST_F(DictionaryPythonLikeTest, PopitemBasicUsage) {
   dict_("temperature") = 25.5;
   dict_("pressure") = 101.3;
