@@ -180,6 +180,29 @@ class Dictionary {
   std::vector<std::pair<std::string, std::reference_wrapper<const Dictionary>>>
   items() const noexcept;
 
+  /*! Return an iterable view of the dictionary's values.
+   *
+   * @return Vector of references to Dictionary values.
+   *
+   * This function has the same semantics as Python's dict.values(). Each
+   * reference points to a Dictionary value that can be further used with
+   * @ref as to get typed values.
+   *
+   * Example:
+   * @code
+   * Dictionary dict;
+   * dict("pressure") = 101.2;
+   * dict("temperature") = 25.6;
+   * dict("sensors")("count") = 3;
+   *
+   * for (const auto& value_ref : dict.values()) {
+   *   const Dictionary& value = value_ref.get();
+   *   std::cout << "Value: " << value << std::endl;
+   * }
+   * @endcode
+   */
+  std::vector<std::reference_wrapper<const Dictionary>> values() const noexcept;
+
   //! Return the number of keys in the dictionary.
   unsigned size() const noexcept { return map_.size(); }
 
