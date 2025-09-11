@@ -142,9 +142,9 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
-   * dict.set("pressure", 101.3);
-   * dict("sensors").set("count", 3);
+   * dict("pressure") = 102.4;
+   * dict("temperature") = 26.2;
+   * dict("sensors")("count") = 3;
    *
    * std::vector<std::string> keys = dict.keys();
    * for (const std::string& key : keys) {
@@ -167,9 +167,9 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
-   * dict.set("pressure", 101.3);
-   * dict("sensors").set("count", 3);
+   * dict("pressure") = 101.3;
+   * dict("temperature") = 25.5;
+   * dict("sensors")("count") = 3;
    *
    * for (const auto& [key, value_ref] : dict.items()) {
    *   const Dictionary& value = value_ref.get();
@@ -223,7 +223,7 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
+   * dict("temperature") = 25.5;
    * double& temp = dict.get<double>("temperature");
    * temp = 30.0;  // Modifies the value in the dictionary
    * @endcode
@@ -265,7 +265,7 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("count", 42);
+   * dict("count") = 42;
    * int value = dict.get<int>("count", 0);     // Returns 42
    * int missing = dict.get<int>("missing", 0); // Returns 0 (default)
    * @endcode
@@ -351,7 +351,7 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
+   * dict("temperature") = 25.5;
    *
    * double& temp = dict.setdefault<double>("temperature", 20.0);  // 25.5
    * double& pressure = dict.setdefault<double>("pressure", 101.3); // 101.3
@@ -450,8 +450,8 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
-   * dict.set("pressure", 101.3);
+   * dict("pressure") = 101.2;
+   * dict("temperature") = 25.5;
    *
    * double temp = dict.pop<double>("temperature");
    * std::cout << "Removed: " << temp << std::endl;  // 25.5
@@ -481,7 +481,7 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
+   * dict("temperature") = 35.5;
    *
    * double temp = dict.pop<double>("temperature", 20.0);  // 25.5
    * double missing = dict.pop<double>("missing", 20.0);   // 20.0
@@ -545,8 +545,8 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict;
-   * dict.set("temperature", 25.5);
-   * dict.set("pressure", 101.3);
+   * dict("pressure") = 99.8;
+   * dict("temperature") = 27.2;
    * std::cout << dict.size() << std::endl;  // 2
    * dict.clear();
    * std::cout << dict.size() << std::endl;  // 0
@@ -609,11 +609,11 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary original;
-   * original.set("temperature", 25.5);
-   * original("sensors").set("count", 3);
+   * original("temperature") = 30.1;
+   * original("sensors")("count") = 3;
    *
    * Dictionary copy = Dictionary::deepcopy(original);
-   * copy.set("temperature", 30.0);  // Does not affect original
+   * copy("temperature") = 30.0;  // Does not affect original
    * std::cout << original.get<double>("temperature") << std::endl;  // 25.5
    * @endcode
    */
@@ -705,12 +705,12 @@ class Dictionary {
    * Example:
    * @code
    * Dictionary dict1;
-   * dict1.set("temperature", 25.5);
-   * dict1.set("pressure", 101.3);
+   * dict1("pressure") = 98.9;
+   * dict1("temperature") = 21.2;
    *
    * Dictionary dict2;
-   * dict2.set("temperature", 30.0);  // This will overwrite dict1's temperature
-   * dict2.set("humidity", 65.0);     // This will be added to dict1
+   * dict2("temperature") = 30.0;  // Update will overwrite dict1's temperature
+   * dict2("humidity") = 65.0;     // Update will add this to dict1
    *
    * dict1.update(dict2);
    * std::cout << dict1.get<double>("temperature") << std::endl;  // 30.0
