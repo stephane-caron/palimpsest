@@ -109,7 +109,7 @@ If any of these design decisions doesn't match what you are looking for, you can
 
 ### Bazel
 
-Add to your `WORKSPACE` file the `http_archive` instruction from the [release page](https://github.com/stephane-caron/palimpsest/releases/tag/v2.4.0).
+Add to your `WORKSPACE` file the `http_archive` instruction from the [release page](https://github.com/stephane-caron/palimpsest/releases/tag/v3.0.0).
 
 You can then define C++ targets that depend on ``@palimpsest``:
 
