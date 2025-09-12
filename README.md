@@ -81,13 +81,9 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 There are a few differences:
 
 - Dictionaries are move-only: there is no `copy` function matching Python's `dict.copy`, but `Dictionary::deepcopy` matches Python's `copy.deepcopy`.
-- Dictionaries do not conserve insertion order, whereas insertion order conservation is guaranteed since Python 3.7.
-
-Implementing one of the missing functions is a great way to [contribute](CONTRIBUTING.md) to this project.
+- Dictionaries do not conserve insertion order, whereas insertion order conservation is guaranteed in Python since version 3.7 of the language.
 
 ## Features and non-features
-
-All design decisions have their pros and cons. Take a look at the features and non-features below to decide if it is also a fit for _your_ use case.
 
 The two main assumptions in palimpsest dictionaries are that:
 
@@ -103,11 +99,11 @@ The two main assumptions in palimpsest dictionaries are that:
 
 ### Non-features
 
-* Dictionaries are move-only (deep copies are possible but now shallow copies)
+* Dictionaries are move-only (deep copies are possible, but now shallow copies)
 * Types need to deserialize unambiguously (*e.g.*, positive integers always deserialize to `unsigned`)
 * Array values are mostly limited to Eigen tensors (matrix, quaternion, vector)
 
-Check out the [alternatives](https://github.com/stephane-caron/palimpsest#see-also) below if any of these design decisions doesn't match your requirements.
+If any of these design decisions doesn't match what you are looking for, you can also check out a list of alternative libraries below.
 
 ## Installation
 
