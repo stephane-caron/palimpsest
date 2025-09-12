@@ -76,7 +76,7 @@ Palimpsest will feel familiar if you are used to Python dictionaries, as its API
 | [`dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem) | [`Dictionary::popitem`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1f131706b9fe3e3ccaaeae405c81f27c) |
 | [`dict.setdefault`](https://docs.python.org/3/library/stdtypes.html#dict.setdefault) | [`Dictionary::setdefault`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#aaa4a895aa93a7483ea49d3231f5e0b6b) |
 | [`dict.update`](https://docs.python.org/3/library/stdtypes.html#dict.update) | [`Dictionary::update`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a1b5bb02bcf813b05aef280f47b25ce80) |
-| [`dict.values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | not implemented yet ✖️  |
+| [`dict.values`](https://docs.python.org/3/library/stdtypes.html#dict.values) | [`Dictionary::values`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#af71082c3d7f7c6624fb76fde3eb88ad3) |
 
 There are a few differences:
 
