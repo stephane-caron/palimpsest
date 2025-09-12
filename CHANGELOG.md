@@ -133,14 +133,14 @@ All notable changes to this project will be documented in this file.
 
 This is the initial release of palimpsest, a small C++ library that provides a ``Dictionary`` type meant for fast value updates and serialization. It is called palimpsest because these dictionaries are designed for frequent rewritings (values change fast) on the same support (keys change slow).
 
-[unreleased]: https://github.com/qpsolvers/qpsolvers/compare/v2.4.0...HEAD
-[2.4.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.2...v2.4.0
-[2.3.2]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.1...v2.3.2
-[2.3.1]: https://github.com/qpsolvers/qpsolvers/compare/v2.3.0...v2.3.1
-[2.3.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.1...v2.3.0
-[2.2.1]: https://github.com/qpsolvers/qpsolvers/compare/v2.2.0...v2.2.1
-[2.2.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.1.0...v2.2.0
-[2.1.0]: https://github.com/qpsolvers/qpsolvers/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/qpsolvers/qpsolvers/compare/v1.1.0...v2.0.0
-[1.1.0]: https://github.com/qpsolvers/qpsolvers/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/qpsolvers/qpsolvers/releases/tag/v1.0.0
+[unreleased]: https://github.com/stephane-caron/palimpsest/compare/v2.4.0...HEAD
+[2.4.0]: https://github.com/stephane-caron/palimpsest/compare/v2.3.2...v2.4.0
+[2.3.2]: https://github.com/stephane-caron/palimpsest/compare/v2.3.1...v2.3.2
+[2.3.1]: https://github.com/stephane-caron/palimpsest/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/stephane-caron/palimpsest/compare/v2.2.1...v2.3.0
+[2.2.1]: https://github.com/stephane-caron/palimpsest/compare/v2.2.0...v2.2.1
+[2.2.0]: https://github.com/stephane-caron/palimpsest/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/stephane-caron/palimpsest/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/stephane-caron/palimpsest/compare/v1.1.0...v2.0.0
+[1.1.0]: https://github.com/stephane-caron/palimpsest/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/stephane-caron/palimpsest/releases/tag/v1.0.0
