@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Add `Dictionary::pop` function
 - Add `Dictionary::popitem` function
 - Add `Dictionary::setdefault` function
+- Add `Dictionary::values` function
 - Add copy constructor to values
 - examples: Show how to use palimpsest dictionaries like Python ones
 
