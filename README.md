@@ -63,8 +63,8 @@ Dictionaries can also be serialized to bytes for transmission over TCP, memory-m
 
 Palimpsest will feel familiar if you are used to Python dictionaries, as its API is a subset of Python's `dict`:
 
-| Python `dict` | Palimpsest `Dictionary` |
-|---------------|---------------------------|
+| 🐍 Python `dict` | 🚀 Palimpsest `Dictionary` |
+|------------------|----------------------------|
 | [`dict.clear`](https://docs.python.org/3/library/stdtypes.html#dict.clear) | [`Dictionary::clear`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#ae98a88dd6a1c5e5afa84f719189882d9) |
 | [`dict.copy`](https://docs.python.org/3/library/stdtypes.html#dict.copy) | Dictionaries are [move-only](https://github.com/stephane-caron/palimpsest?tab=readme-ov-file#non-features) |
 | [`copy.deepcopy`](https://docs.python.org/3/library/copy.html#copy.deepcopy) | [`Dictionary::deepcopy`](https://stephane-caron.github.io/palimpsest/classpalimpsest_1_1Dictionary.html#a2ddbd4316657e27d11c5a07a476841e6) |
